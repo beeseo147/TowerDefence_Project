@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - FxTemporaire
+  - RoomLight
+  - SamplesInfoPanel
+  - Tower
   layers:
   - Default
   - TransparentFX

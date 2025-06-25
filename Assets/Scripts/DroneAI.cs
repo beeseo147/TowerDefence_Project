@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class DroneAI : MonoBehaviour
 {
-    enum DroneState //드론의 상태 상수 정의
+    protected enum DroneState //드론의 상태 상수 정의
     {
         Idle,
         Move,
@@ -16,20 +16,22 @@ public class DroneAI : MonoBehaviour
         Damage,
         Die
     }
-    DroneState state = DroneState.Idle; //초기 시작 상태는 Idle로 설정
+    protected DroneState state = DroneState.Idle; //초기 시작 상태는 Idle로 설정
     public float idleDelayTime = 2f; //대기 상태의 지속시간
-    float currentTime; //경과 시간
+    protected float currentTime; //경과 시간
 
     public float moveSpeed = 1; //공격 속도
+    public int attackPower = 1;
     public Transform tower; //타워위치(타겟위치)
-    NavMeshAgent agent; //내비매쉬 에이전트 컴포넌트
+    protected NavMeshAgent agent; //내비매쉬 에이전트 컴포넌트
     public float attackRange = 3; //타워와 3미터 거리면 공격 시작
     public float attackDelayTime = 2; //공격 딜레이 시간
 
     public GameObject HpUI;
     //private 변수도 유니티 에디터에서 보이게 하는 어트리뷰트
     [SerializeField] //private속성 이지만 에디터에 노출이 된다.
-    private int hp = 3;
+    private int maxHp = 3;
+    private int currentHp = 0;
     //폭발효과 오브젝트
    
     Transform explosion;
@@ -51,6 +53,7 @@ public class DroneAI : MonoBehaviour
         expAudio = explosion.GetComponent<AudioSource>();
 
         Tower.Instance.onTowerDestroy += GameOver;  
+        currentHp = maxHp;
         HpUI.SetActive(false);
     }
 
@@ -61,11 +64,11 @@ public class DroneAI : MonoBehaviour
         {
             case DroneState.Idle: Idle(); break;
             case DroneState.Move: Move(); break;
-            case DroneState.Attack: Attack(); break;
+            case DroneState.Attack: Attack(attackPower); break;
             case DroneState.Damage: Damage(); break;
             case DroneState.Die: Die(); break;
         }
-        print(state);
+        //print(state);
     }
     void Idle() 
     {
@@ -76,7 +79,7 @@ public class DroneAI : MonoBehaviour
             agent.enabled = true; //agent 활성화
         }
     }
-    void Move()
+    protected virtual void Move()
     {
         //내비게이션의 목적지를 타워로 설정
         agent.SetDestination(tower.position);
@@ -87,13 +90,13 @@ public class DroneAI : MonoBehaviour
             agent.enabled = false;
         }
     }
-    void Attack()
+    protected virtual void Attack(int attackPower)
     {
         currentTime += Time.deltaTime; //시간을 재고
         if (currentTime > attackDelayTime) //2초에 한번 씩 공격이 가능하도록 함
         {
             //타워의 체력을 감소
-            Tower.Instance.HP--; //HP 프로퍼티의 set함수가 실행되어 깜박거리는 효과 재생
+            Tower.Instance.HP -= attackPower; //HP 프로퍼티의 set함수가 실행되어 깜박거리는 효과 재생
       //      Tower.Instance.HP = Tower.Instance.HP - 1;
             //피격 이펙트 효과
             currentTime = 0;
@@ -101,12 +104,12 @@ public class DroneAI : MonoBehaviour
     }
     public void OnDamageProcess(int damage)
     {
-        hp--; //체력을 1감소, 죽지 않았다면 Damage 상태로 변경
-        if (hp > 0)
+        currentHp -= damage; 
+        if (currentHp > 0)
         {
             state = DroneState.Damage;
             HpUI.SetActive(true);
-            HpUI.GetComponentInChildren<Image>().fillAmount = (float)hp / 3;
+            HpUI.GetComponentInChildren<Image>().fillAmount = (float)currentHp / maxHp;
             StopAllCoroutines(); //실행되고 있는 코루틴 함수가 있다면 중지시킴
             StartCoroutine(Damage());
         }
