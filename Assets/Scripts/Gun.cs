@@ -34,7 +34,8 @@ public class Gun : MonoBehaviour
             RaycastHit hitInfo;
             int playerLayer = 1 << LayerMask.NameToLayer("Player");
             int towerLayer = 1 << LayerMask.NameToLayer("Tower");
-            int layerMask = playerLayer | towerLayer;
+            int boundaryLayer = 1 << LayerMask.NameToLayer("Boundary");
+            int layerMask = playerLayer | towerLayer | boundaryLayer;
             if (Physics.Raycast(ray, out hitInfo, 200, ~layerMask))
             {
                 //레이와 부딪힌 오브젝트가 드론이라면.. 
