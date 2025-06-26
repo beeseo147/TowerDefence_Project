@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class DroneHealer : DroneAI
 {
@@ -66,14 +67,10 @@ public class DroneHealer : DroneAI
         if (currentTime >= healInterval)
         {
             currentTime = 0;
-            Debug.Log("Èú Àû¿ë!");
+            //Debug.Log("Èú Àû¿ë!");
             healTarget.Heal(healAmount);
 
-            if (healEffectPrefab != null)
-            {
-                GameObject fx = Instantiate(healEffectPrefab, healTarget.transform.position + Vector3.up, Quaternion.identity);
-                Destroy(fx, 1f);
-            }
+            EffectPoolManager.Instance.GetHealEffect(transform.position, Quaternion.identity);
         }
     }
 

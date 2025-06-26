@@ -2,6 +2,7 @@ using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /* -------------------- Dynamic Data -------------------- */
 public class PlayerRuntimeStat : MonoBehaviour
@@ -11,7 +12,7 @@ public class PlayerRuntimeStat : MonoBehaviour
     public float  CritChance { get; private set; }
     public float  CritMult   { get; private set; }
 
-    public event System.Action OnChanged;
+    public UnityEvent OnChanged;
     
     [SerializeField] Transform startPoint; // 임시. 이동예정..
 
@@ -41,8 +42,7 @@ public class PlayerRuntimeStat : MonoBehaviour
         }
 
         Name = so.baseName; // TODO : Get input values Later..
-
-                Attack = so.baseAttackDamage;
+        Attack = so.baseAttackDamage;
         CritChance = so.baseCritChance;
         CritMult = so.baseCritMultiplier;
         OnChanged?.Invoke();

@@ -5,12 +5,14 @@ using UnityEngine.Pool;
 
 public class EffectPoolManager : MonoBehaviour
 {
-    [SerializeField] private GameObject effectPrefab;
+    [SerializeField] private GameObject bulletEffectPrefab;
+    [SerializeField] private GameObject healEffectPrefab;
     [SerializeField] private Transform effectParent;
 
     public static EffectPoolManager Instance;
 
-    private IObjectPool<GameObject> effectPool;
+    private IObjectPool<GameObject> bulletPool;
+    private IObjectPool<GameObject> healPool;
 
     private void Awake()
     {
@@ -19,49 +21,42 @@ public class EffectPoolManager : MonoBehaviour
             Instance = this;
         }
 
-        effectPool = new ObjectPool<GameObject>(
-            CreateFunc,
-            OnGetEffect,
-            OnReleaseEffect,
-            OnDestroyEffect,
-            collectionCheck: false,
-            defaultCapacity: 10,
-            maxSize: 50
-        );
+        bulletPool = CreatePool(bulletEffectPrefab);
+        healPool = CreatePool(healEffectPrefab);
     }
 
-    private GameObject CreateFunc()
+    private IObjectPool<GameObject> CreatePool(GameObject prefab)
     {
-        var effect = Instantiate(effectPrefab, effectParent);
-        return effect;
+        return new ObjectPool<GameObject>(
+            () => Instantiate(prefab, effectParent),
+            obj => obj.SetActive(true),
+            obj => obj.SetActive(false),
+            obj => Destroy(obj),
+            false, 10, 50
+            );
     }
 
-    private void OnGetEffect(GameObject obj)
+    public GameObject GetBulletEffect(Vector3 position, Quaternion rotation)
     {
-        obj.SetActive(true);
+        return GetAndRelease(bulletPool, position, rotation, 0.5f);
     }
 
-    private void OnReleaseEffect(GameObject obj)
+    public GameObject GetHealEffect(Vector3 position, Quaternion rotation)
     {
-        obj.SetActive(false);
+        return GetAndRelease(healPool, position, rotation, 0.5f);
     }
 
-    private void OnDestroyEffect(GameObject obj)
+    private GameObject GetAndRelease(IObjectPool<GameObject> pool, Vector3 pos, Quaternion rot, float delay)
     {
-        Destroy(obj);
+        GameObject obj = pool.Get();
+        obj.transform.SetPositionAndRotation(pos, rot);
+        StartCoroutine(AutoRelease(pool, obj, delay));
+        return obj;
     }
 
-    public GameObject GetEffect(Vector3 position, Quaternion rotation)
-    {
-        GameObject effect = effectPool.Get();
-        effect.transform.SetPositionAndRotation(position, rotation);
-        StartCoroutine(AutoRelease(effect, .5f));
-        return effect;
-    }
-
-    private IEnumerator AutoRelease(GameObject obj, float delay)
+    private IEnumerator AutoRelease(IObjectPool<GameObject> pool, GameObject obj, float delay)
     {
         yield return new WaitForSeconds(delay);
-        effectPool.Release(obj);
+        pool.Release(obj);
     }
 }

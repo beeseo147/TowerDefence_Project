@@ -13,13 +13,15 @@ public class PlayerStatController : MonoBehaviour
         if (!Runtime)
         {
             Debug.LogError("PlayerStatController Awake() : PlayerRuntimeStat component missing");
-            enabled = false; return;
+            enabled = false; 
+            return;
         }
 
         if (!baseSO)
         {
             Debug.LogError("PlayerStatController Awake() : PlayerStatBaseSO is Null");
-            enabled = false; return;
+            enabled = false; 
+            return;
         }
 
         Runtime.Init(baseSO);

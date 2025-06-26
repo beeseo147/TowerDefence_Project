@@ -43,7 +43,7 @@ public class DroneShooter : DroneAI
                 {
                     //print("TowerHit");
                     Quaternion rot = Quaternion.LookRotation(direction);
-                    EffectPoolManager.Instance.GetEffect(firePoint.position, rot);
+                    EffectPoolManager.Instance.GetBulletEffect(firePoint.position, rot);
 
                     Tower.Instance.HP -= attackPower;
                 }
