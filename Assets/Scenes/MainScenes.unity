@@ -774,6 +774,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8262193812474762745, guid: a094d422a1dcf3043aa004ba32335e7a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 722595941}
+    - targetCorrespondingSourceObject: {fileID: 8262193812474762745, guid: a094d422a1dcf3043aa004ba32335e7a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 722595944}
+    - targetCorrespondingSourceObject: {fileID: 8262193812474762745, guid: a094d422a1dcf3043aa004ba32335e7a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 722595943}
+    - targetCorrespondingSourceObject: {fileID: 8262193812474762745, guid: a094d422a1dcf3043aa004ba32335e7a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 722595942}
   m_SourcePrefab: {fileID: 100100000, guid: a094d422a1dcf3043aa004ba32335e7a, type: 3}
 --- !u!1 &331724955
 GameObject:
@@ -1792,8 +1801,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageUI: {fileID: 2121971219}
   damageImage: {fileID: 167019322}
-  initialHP: 10
+  baseSO: {fileID: 11400000, guid: 65566ca4de8e5f5418b2763b4436adf3, type: 2}
   damageTime: 0.1
+--- !u!114 &722595942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483177717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95d148c164ab1741ad9de137fee34ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &722595943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483177717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16ee046637eb59449836203a24df6808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHpChanged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &722595944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483177717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef1bd679920d4d4886f7362695ab5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBarIamage: {fileID: 1688261122}
+  shieldIamage: {fileID: 201432270}
 --- !u!1 &734004200
 GameObject:
   m_ObjectHideFlags: 0
@@ -2666,8 +2716,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletImpact: {fileID: 178460500}
   crosshair: {fileID: 368544044}
-  playerStats: {fileID: 0}
+  playerStats: {fileID: 999939253}
   bIsFreezeShot: 0
+--- !u!114 &999939253 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5559980084878472548, guid: 75925455a907ac34c9065ba487af8596, type: 3}
+  m_PrefabInstance: {fileID: 999939234}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999939235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4950f19e1f0fb4b4093f62d0093c6f24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1043327702
 GameObject:
   m_ObjectHideFlags: 0
@@ -3626,8 +3687,6 @@ MonoBehaviour:
   dropTables:
   - enemyType: Drone
     possibleItems:
-    - {fileID: 11400000, guid: ba06a54f50719d54e9f49480a1c9eb88, type: 2}
-    - {fileID: 11400000, guid: 133b902def7ac694bbc508cac7a8b6ba, type: 2}
     - {fileID: 11400000, guid: 592e9e89d342bac489069481a31e6856, type: 2}
     - {fileID: 11400000, guid: 5edf1c6e699dd5e46858363b62e0b002, type: 2}
     dropChance: 100
