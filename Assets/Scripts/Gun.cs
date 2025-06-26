@@ -80,36 +80,22 @@ public class Gun : MonoBehaviour
                      (1 << LayerMask.NameToLayer("Boundary"));
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 200f, ~ignore))
         {
-            // 레이와 부딪힌 오브젝트가 드론이라면.. 
-            if (hitInfo.transform.name.Contains("Drone"))
-            Ray ray = new Ray(ARAVRInput.RHandPosition,
-                ARAVRInput.RHandDirection);
-            RaycastHit hitInfo;
-            int playerLayer = 1 << LayerMask.NameToLayer("Player");
-            int towerLayer = 1 << LayerMask.NameToLayer("Tower");
-         
-            int layerMask = playerLayer | towerLayer;
-            if (Physics.Raycast(ray, out hitInfo, 200, ~layerMask))
+            if (Physics.Raycast(ray, out hitInfo, 200, ~ignore))
             {
                 DroneAI drone = hitInfo.transform.GetComponent<DroneAI>();
                 if (drone)
                 {
-                    drone.OnDamageProcess(damage);
-
                     // 사망 판단 및 ScoreManager.Instance.AddKill() 호출
-                    DroneAI drone = hitInfo.transform.GetComponent<DroneAI>();
-                    if (drone)
+                    //DroneAI drone = hitInfo.transform.GetComponent<DroneAI>();
+                    if(bIsFreezeShot)
                     {
-                        if(bIsFreezeShot)
-                        {
-                            drone.OnDamageProcess(0);
-                            bIsFreezeShot = false;
-                            //drone.StartCoroutine(drone.UnfreezeCoroutine());
-                        }
-                        else
-                        {
-                            drone.OnDamageProcess(1);
-                        }
+                        drone.OnDamageProcess(0);
+                        bIsFreezeShot = false;
+                        //drone.StartCoroutine(drone.UnfreezeCoroutine());
+                    }
+                    else
+                    {
+                        drone.OnDamageProcess(damage);
                     }
                 }
                 if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Item"))

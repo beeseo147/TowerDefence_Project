@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class DroneAI : MonoBehaviour//, IFrozenObject
+public class DroneAI : MonoBehaviour, IFrozenObject
 {
-    enum DroneState //µå·ĞÀÇ »óÅÂ »ó¼ö Á¤ÀÇ
+    protected enum DroneState //ë“œë¡ ì˜ ìƒíƒœ ìƒìˆ˜ ì •ì˜
     {
         Idle,
         Move,
@@ -16,41 +16,47 @@ public class DroneAI : MonoBehaviour//, IFrozenObject
         Damage,
         Die
     }
-    DroneState state = DroneState.Idle; //ÃÊ±â ½ÃÀÛ »óÅÂ´Â Idle·Î ¼³Á¤
-    public float idleDelayTime = 2f; //´ë±â »óÅÂÀÇ Áö¼Ó½Ã°£
-    float currentTime; //°æ°ú ½Ã°£
+    protected DroneState state = DroneState.Idle; //ì´ˆê¸° ì‹œì‘ ìƒíƒœëŠ” Idleë¡œ ì„¤ì •
+    public float idleDelayTime = 2f; //ëŒ€ê¸° ìƒíƒœì˜ ì§€ì†ì‹œê°„
+    protected float currentTime; //ê²½ê³¼ ì‹œê°„
 
-    public float moveSpeed = 1; //°ø°İ ¼Óµµ
-    public Transform tower; //Å¸¿öÀ§Ä¡(Å¸°ÙÀ§Ä¡)
-    NavMeshAgent agent; //³»ºñ¸Å½¬ ¿¡ÀÌÀüÆ® ÄÄÆ÷³ÍÆ®
-    public float attackRange = 3; //Å¸¿ö¿Í 3¹ÌÅÍ °Å¸®¸é °ø°İ ½ÃÀÛ
-    public float attackDelayTime = 2; //°ø°İ µô·¹ÀÌ ½Ã°£
+    public float moveSpeed = 1; //ê³µê²© ì†ë„
+    public int attackPower = 1;
+    public Transform tower; //íƒ€ì›Œìœ„ì¹˜(íƒ€ê²Ÿìœ„ì¹˜)
+    protected NavMeshAgent agent; //ë‚´ë¹„ë§¤ì‰¬ ì—ì´ì „íŠ¸ ì»´í¬ë„ŒíŠ¸
+    public float attackRange = 3; //íƒ€ì›Œì™€ 3ë¯¸í„° ê±°ë¦¬ë©´ ê³µê²© ì‹œì‘
+    public float attackDelayTime = 2; //ê³µê²© ë”œë ˆì´ ì‹œê°„
 
     public GameObject HpUI;
-    //private º¯¼öµµ À¯´ÏÆ¼ ¿¡µğÅÍ¿¡¼­ º¸ÀÌ°Ô ÇÏ´Â ¾îÆ®¸®ºäÆ®
-    [SerializeField] //private¼Ó¼º ÀÌÁö¸¸ ¿¡µğÅÍ¿¡ ³ëÃâÀÌ µÈ´Ù.
-    private int hp = 3;
-    //Æø¹ßÈ¿°ú ¿ÀºêÁ§Æ®
+    //private ë³€ìˆ˜ë„ ìœ ë‹ˆí‹° ì—ë””í„°ì—ì„œ ë³´ì´ê²Œ í•˜ëŠ” ì–´íŠ¸ë¦¬ë·°íŠ¸
+    [SerializeField] //privateì†ì„± ì´ì§€ë§Œ ì—ë””í„°ì— ë…¸ì¶œì´ ëœë‹¤.
+    private int maxHp = 3;
+    private int currentHp = 0;
+    //í­ë°œíš¨ê³¼ ì˜¤ë¸Œì íŠ¸
    
     Transform explosion;
     ParticleSystem expEffect;
     AudioSource expAudio;
 
+    public int CurrentHp => currentHp;
+    public int MaxHp => maxHp;
+
     // Start is called before the first frame update
     void Start()
     {
-        //Å¸¿ö ¿ÀºêÁ§Æ®¸¦ Ã£´Â´Ù(¸ñÀûÁö)
+        //íƒ€ì›Œ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ëŠ”ë‹¤(ëª©ì ì§€)
         tower = GameObject.Find("Tower").transform;
         explosion = GameObject.Find("Explosion").transform;
         agent = GetComponent<NavMeshAgent>(); 
-        agent.enabled = false; //³»ºñ°ÔÀÌ¼ÇÀ» ÇÒ´ç ¹Ş°í ¹Ù·Î ºñÈ°¼ºÈ­
-        agent.speed = moveSpeed; // ¿òÁ÷ÀÌ´Â ¼Óµµ 1
+        agent.enabled = false; //ë‚´ë¹„ê²Œì´ì…˜ì„ í• ë‹¹ ë°›ê³  ë°”ë¡œ ë¹„í™œì„±í™”
+        agent.speed = moveSpeed; // ì›€ì§ì´ëŠ” ì†ë„ 1
 
-        //explosion ¿ÀºêÁ§Æ®ÀÇ ÆÄÆ¼Å¬°ú ¿Àµğ¿À ÄÄÆ÷³ÍÆ® ¾ò¾î¿À±â
+        //explosion ì˜¤ë¸Œì íŠ¸ì˜ íŒŒí‹°í´ê³¼ ì˜¤ë””ì˜¤ ì»´í¬ë„ŒíŠ¸ ì–»ì–´ì˜¤ê¸°
         expEffect = explosion.GetComponent<ParticleSystem>();
         expAudio = explosion.GetComponent<AudioSource>();
 
         Tower.Instance.onTowerDestroy += GameOver;  
+        currentHp = maxHp;
         HpUI.SetActive(false);
     }
 
@@ -61,7 +67,7 @@ public class DroneAI : MonoBehaviour//, IFrozenObject
         {
             case DroneState.Idle: Idle(); break;
             case DroneState.Move: Move(); break;
-            case DroneState.Attack: Attack(); break;
+            case DroneState.Attack: Attack(attackPower); break;
             case DroneState.Damage: Damage(); break;
             case DroneState.Die: Die(); break;
         }
@@ -69,91 +75,128 @@ public class DroneAI : MonoBehaviour//, IFrozenObject
     }
     void Idle() 
     {
-        currentTime += Time.deltaTime; //½Ã°£À» Àé´Ù
-        if (currentTime > idleDelayTime) //°æ°ú ½Ã°£ÀÌ ´ë±â ½Ã°£À» ÃÊ°úÇß´Ù¸é
+        currentTime += Time.deltaTime; //ì‹œê°„ì„ ì°ë‹¤
+        if (currentTime > idleDelayTime) //ê²½ê³¼ ì‹œê°„ì´ ëŒ€ê¸° ì‹œê°„ì„ ì´ˆê³¼í–ˆë‹¤ë©´
         {
-            state = DroneState.Move; //»óÅÂ¸¦ ÀÌµ¿À¸·Î ÀüÈ¯
-            agent.enabled = true; //agent È°¼ºÈ­
+            state = DroneState.Move; //ìƒíƒœë¥¼ ì´ë™ìœ¼ë¡œ ì „í™˜
+            agent.enabled = true; //agent í™œì„±í™”
         }
     }
-    void Move()
+    protected virtual void Move()
     {
-        //³»ºñ°ÔÀÌ¼ÇÀÇ ¸ñÀûÁö¸¦ Å¸¿ö·Î ¼³Á¤
+        //ë‚´ë¹„ê²Œì´ì…˜ì˜ ëª©ì ì§€ë¥¼ íƒ€ì›Œë¡œ ì„¤ì •
         agent.SetDestination(tower.position);
-        //°ø°İ ¹üÀ§ ¾È¿¡ µé¾î¿À¸é °ø°İ »óÅÂ·Î ÀüÈ¯
+        //ê³µê²© ë²”ìœ„ ì•ˆì— ë“¤ì–´ì˜¤ë©´ ê³µê²© ìƒíƒœë¡œ ì „í™˜
         if (Vector3.Distance(transform.position, tower.position) < attackRange)
         {
             state = DroneState.Attack;
             agent.enabled = false;
         }
     }
-    void Attack()
+    protected virtual void Attack(int attackPower)
     {
-        currentTime += Time.deltaTime; //½Ã°£À» Àç°í
-        if (currentTime > attackDelayTime) //2ÃÊ¿¡ ÇÑ¹ø ¾¿ °ø°İÀÌ °¡´ÉÇÏµµ·Ï ÇÔ
+        currentTime += Time.deltaTime; //ì‹œê°„ì„ ì¬ê³ 
+        if (currentTime > attackDelayTime) //2ì´ˆì— í•œë²ˆ ì”© ê³µê²©ì´ ê°€ëŠ¥í•˜ë„ë¡ í•¨
         {
-            //Å¸¿öÀÇ Ã¼·ÂÀ» °¨¼Ò
-            Tower.Instance.HP--; //HP ÇÁ·ÎÆÛÆ¼ÀÇ setÇÔ¼ö°¡ ½ÇÇàµÇ¾î ±ô¹Ú°Å¸®´Â È¿°ú Àç»ı
-      //      Tower.Instance.HP = Tower.Instance.HP - 1;
-            //ÇÇ°İ ÀÌÆåÆ® È¿°ú
+            StartCoroutine(AttackMotion(attackPower));
+            
             currentTime = 0;
         }
     }
+
+    IEnumerator AttackMotion(int attackPower)
+    {
+        Vector3 originPos = transform.position;
+        Vector3 direction = (tower.position - transform.position).normalized;
+        Vector3 attackPos = originPos + direction * 0.5f;
+
+        float duration = 0.1f;
+        float elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            transform.position = Vector3.Lerp(originPos, attackPos, t);
+            yield return null;
+        }
+
+        Tower.Instance.HP -= attackPower;
+
+        elapsed = 0;
+        while (elapsed < duration) // ì›ë˜ ìœ„ì¹˜ë¡œ
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            transform.position = Vector3.Lerp(attackPos, originPos, t);
+            yield return null;
+        }
+    }
+
     public void OnDamageProcess(int damage)
     {
-        hp--; //Ã¼·ÂÀ» 1°¨¼Ò, Á×Áö ¾Ê¾Ò´Ù¸é Damage »óÅÂ·Î º¯°æ
-        if (hp > 0)
+        currentHp -= damage; 
+        if (currentHp > 0)
         {
             state = DroneState.Damage;
             HpUI.SetActive(true);
-            HpUI.GetComponentInChildren<Image>().fillAmount = (float)hp / 3;
-            StopAllCoroutines(); //½ÇÇàµÇ°í ÀÖ´Â ÄÚ·çÆ¾ ÇÔ¼ö°¡ ÀÖ´Ù¸é ÁßÁö½ÃÅ´
+            HpUI.GetComponentInChildren<Image>().fillAmount = (float)currentHp / maxHp;
+            StopAllCoroutines(); //ì‹¤í–‰ë˜ê³  ìˆëŠ” ì½”ë£¨í‹´ í•¨ìˆ˜ê°€ ìˆë‹¤ë©´ ì¤‘ì§€ì‹œí‚´
             StartCoroutine(Damage());
+
+            CancelInvoke(nameof(HideHpUI));
+            Invoke(nameof(HideHpUI), 1.5f);
         }
-        else //Á×¾ú´Ù¸é Æø¹ß ÀÌÆåÆ® Àç»ı, µå·Ğ ÆÄ±«
+        else //ì£½ì—ˆë‹¤ë©´ í­ë°œ ì´í™íŠ¸ ì¬ìƒ, ë“œë¡  íŒŒê´´
         {
             Die();
         }
     }
+
+    private void HideHpUI()
+    {
+        HpUI.SetActive(false);
+    }
+
     IEnumerator Damage()
     {
-        agent.enabled = false; //±æÃ£±â ÁßÁö
-                               //ÀÚ½Ä °´Ã¼ÀÇ MeshRenderer¿¡¼­ Material ¾ò¾î¿À±â
+        agent.enabled = false; //ê¸¸ì°¾ê¸° ì¤‘ì§€
+                               //ìì‹ ê°ì²´ì˜ MeshRendererì—ì„œ Material ì–»ì–´ì˜¤ê¸°
         Material mat = GetComponentInChildren<MeshRenderer>().material;
-        Color originalColor = mat.color; //¿ø·¡ »ö ÀúÀå
-        mat.color = Color.red; //ÀçÁúÀÇ »öÀ» »¡°£»öÀ¸·Î º¯°æ
+        Color originalColor = mat.color; //ì›ë˜ ìƒ‰ ì €ì¥
+        mat.color = Color.black;  //ì¬ì§ˆì˜ ìƒ‰ì„ ê²€ì€ìƒ‰ìœ¼ë¡œ ë³€ê²½
    //     GetComponentInChildren<MeshRenderer>().enabled = false;
-        yield return new WaitForSeconds(0.1f); //0.1ÃÊ µÚ¿¡
+        yield return new WaitForSeconds(0.3f); //0.1ì´ˆ ë’¤ì—
    //     GetComponentInChildren<MeshRenderer>().enabled = true;
-        mat.color = originalColor; //¿ø·¡ »öÀ¸·Î º¯°æ
-        state = DroneState.Idle; // »óÅÂ¸¦ Idle·Î ÀúÀå
-        currentTime = 0; //°æ°ú ½Ã°£ ÃÊ±âÈ­ 
+        mat.color = originalColor; //ì›ë˜ ìƒ‰ìœ¼ë¡œ ë³€ê²½
+        state = DroneState.Idle; // ìƒíƒœë¥¼ Idleë¡œ ì €ì¥
+        currentTime = 0; //ê²½ê³¼ ì‹œê°„ ì´ˆê¸°í™” 
     }
     void Die()
     { 
         agent.enabled = false;
         
-        Debug.Log($"DroneAI Die() È£ÃâµÊ: {transform.position}");
+        Debug.Log($"DroneAI Die() í˜¸ì¶œë¨: {transform.position}");
         
-        // ¾ÆÀÌÅÛ µå·Ó Ã³¸®
+        // ì•„ì´í…œ ë“œë¡­ ì²˜ë¦¬
         if (ItemDropManager.Instance != null)
         {
-            Debug.Log("ItemDropManager.Instance°¡ Á¸ÀçÇÔ - ¾ÆÀÌÅÛ µå·Ó ½Ãµµ");
-            print("µå·ĞÀÇ ÇöÀç À§Ä¡: " + transform.position);
+            Debug.Log("ItemDropManager.Instanceê°€ ì¡´ì¬í•¨ - ì•„ì´í…œ ë“œë¡­ ì‹œë„");
+            print("ë“œë¡ ì˜ í˜„ì¬ ìœ„ì¹˜: " + transform.position);
             ItemDropManager.Instance.OnEnemyDeath("Drone", transform.position);
             
         }
         else
         {
-            Debug.LogError("ItemDropManager.Instance°¡ nullÀÔ´Ï´Ù! ¾À¿¡ ItemDropManager°¡ ÀÖ´ÂÁö È®ÀÎÇÏ¼¼¿ä.");
+            Debug.LogError("ItemDropManager.Instanceê°€ nullì…ë‹ˆë‹¤! ì”¬ì— ItemDropManagerê°€ ìˆëŠ”ì§€ í™•ì¸í•˜ì„¸ìš”.");
         }
             
-        //Æø¹ßÈ¿°ú À§Ä¡ ÁöÁ¤
+        //í­ë°œíš¨ê³¼ ìœ„ì¹˜ ì§€ì •
         explosion.position = transform.position;
-        //ÀÌÆåÆ® Àç»ı
+        //ì´í™íŠ¸ ì¬ìƒ
         expEffect.Play();
-        expAudio.Play(); //ÀÌÆåÆ® »ç¿îµå Àç»ı
-        Destroy(gameObject); //µå·Ğ ¾ø¾Ö±â
+        expAudio.Play(); //ì´í™íŠ¸ ì‚¬ìš´ë“œ ì¬ìƒ
+        Destroy(gameObject); //ë“œë¡  ì—†ì• ê¸°
     }
     void GameOver()
     {
@@ -161,4 +204,33 @@ public class DroneAI : MonoBehaviour//, IFrozenObject
             
     }
 
+    public void Heal(int amount)
+    {
+        if (currentHp >= maxHp) return;
+        currentHp = Mathf.Min(currentHp + amount, maxHp);
+        HpUI.GetComponentInChildren<Image>().fillAmount = (float)currentHp / maxHp;
+        HpUI.SetActive(true);
+        CancelInvoke(nameof(HideHpUI));
+        Invoke(nameof(HideHpUI), 1.5f);
+    }
+    public void Freeze()
+    {
+        print("Freeze() í˜¸ì¶œë¨");
+        //ì–¼ìŒ íš¨ê³¼ ì¬ìƒ
+        //ì†ë„ ê°ì†Œ
+        agent.speed *= 0.2f;
+    }
+    public void Unfreeze()
+    {
+        print("Unfreeze() í˜¸ì¶œë¨");
+        //ì–¼ìŒ íš¨ê³¼ ì¢…ë£Œ
+        //ì†ë„ ì¦ê°€
+        agent.speed *= 5f;
+    }
+    public IEnumerator UnfreezeCoroutine()
+    {
+        Freeze();
+        yield return new WaitForSeconds(10f);
+        Unfreeze();
+    }
 }
