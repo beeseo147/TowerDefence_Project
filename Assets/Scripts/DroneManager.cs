@@ -29,10 +29,10 @@ public class DroneManager : MonoBehaviour
         currentTime += Time.deltaTime; 
         if (currentTime > createTime) //1초~5초 사이 랜덤하게 드론 생성
         {
-            if(droneCount >= maxDroneCount)
-            {
-                return;
-            }
+            //if(droneCount >= maxDroneCount)
+            //{
+            //    return;
+            //}
 
             GameObject prefabToSpawn = ChooseGhostByTime(elapsedStageTime);
             GameObject drone = Instantiate(prefabToSpawn);

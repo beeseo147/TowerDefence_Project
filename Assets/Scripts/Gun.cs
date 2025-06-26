@@ -60,6 +60,7 @@ public class Gun : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 200f, ~ignore))
         {
+            print(hitInfo.transform.name + " 레이저에 맞음");
             // 레이와 부딪힌 오브젝트가 드론이라면.. 
             if (hitInfo.transform.name.Contains("Drone"))
             {
