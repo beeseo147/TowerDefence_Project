@@ -2580,24 +2580,32 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 1560745887}
-    - target: {fileID: 5559980084878472548, guid: 75925455a907ac34c9065ba487af8596, type: 3}
-      propertyPath: baseSO
-      value: 
-      objectReference: {fileID: 11400000, guid: 25add50fd59be274cb1836b5175b16cf, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2742576578550574147, guid: 75925455a907ac34c9065ba487af8596, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2167884855805620012, guid: 75925455a907ac34c9065ba487af8596, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 999939236}
+      addedObject: {fileID: 999939247}
   m_SourcePrefab: {fileID: 100100000, guid: 75925455a907ac34c9065ba487af8596, type: 3}
 --- !u!1 &999939235 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2167884855805620012, guid: 75925455a907ac34c9065ba487af8596, type: 3}
   m_PrefabInstance: {fileID: 999939234}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &999939236
+--- !u!114 &999939236 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3709439946625192466, guid: 75925455a907ac34c9065ba487af8596, type: 3}
+  m_PrefabInstance: {fileID: 999939234}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999939235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d83300249d1f96445b27de69d69bc290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &999939247
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2606,9 +2614,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 999939235}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d83300249d1f96445b27de69d69bc290, type: 3}
+  m_Script: {fileID: 11500000, guid: 1129753f1bd581c40a7bc1a205eebe36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletImpact: {fileID: 178460500}
+  crosshair: {fileID: 368544044}
+  playerStats: {fileID: 0}
+  bIsFreezeShot: 0
 --- !u!1 &1043327702
 GameObject:
   m_ObjectHideFlags: 0
@@ -3569,7 +3581,7 @@ MonoBehaviour:
     possibleItems:
     - {fileID: 11400000, guid: 592e9e89d342bac489069481a31e6856, type: 2}
     - {fileID: 11400000, guid: 5edf1c6e699dd5e46858363b62e0b002, type: 2}
-    dropChance: 50
+    dropChance: 100
     minDropCount: 1
     maxDropCount: 1
 --- !u!4 &1414231728

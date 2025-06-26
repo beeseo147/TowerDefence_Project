@@ -80,18 +80,19 @@ public class Gun : MonoBehaviour
 
                     // 사망 판단 및 ScoreManager.Instance.AddKill() 호출
                 }
+                
             }
-
+            if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Item"))
+            {
+                ICollectible collectible = hitInfo.transform.GetComponent<ICollectible>();
+                if (collectible != null && collectible.CanBeCollected(gameObject))
+                {
+                    collectible.Collect(gameObject);
+                }
+            }
             PlayFireEffect(hitInfo);
         }
-        if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Item"))
-        {
-            ICollectible collectible = hitInfo.transform.GetComponent<ICollectible>();
-            if (collectible != null && collectible.CanBeCollected(gameObject))
-            {
-                collectible.Collect(gameObject);
-            }
-        }
+        
     }
 
     void PlayFireEffect(RaycastHit hitinfo)
