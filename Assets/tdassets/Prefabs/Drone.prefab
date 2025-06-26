@@ -175,11 +175,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleDelayTime: 2
   moveSpeed: 1
+  attackPower: 2
   tower: {fileID: 0}
   attackRange: 5
   attackDelayTime: 2
   HpUI: {fileID: 1043982171372544737}
-  hp: 3
+  maxHp: 3
 --- !u!195 &1343164811354559554
 NavMeshAgent:
   m_ObjectHideFlags: 0

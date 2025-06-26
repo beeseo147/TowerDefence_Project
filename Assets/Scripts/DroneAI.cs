@@ -38,6 +38,9 @@ public class DroneAI : MonoBehaviour
     ParticleSystem expEffect;
     AudioSource expAudio;
 
+    public int CurrentHp => currentHp;
+    public int MaxHp => maxHp;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,13 +98,41 @@ public class DroneAI : MonoBehaviour
         currentTime += Time.deltaTime; //시간을 재고
         if (currentTime > attackDelayTime) //2초에 한번 씩 공격이 가능하도록 함
         {
-            //타워의 체력을 감소
-            Tower.Instance.HP -= attackPower; //HP 프로퍼티의 set함수가 실행되어 깜박거리는 효과 재생
-      //      Tower.Instance.HP = Tower.Instance.HP - 1;
-            //피격 이펙트 효과
+            StartCoroutine(AttackMotion(attackPower));
+            
             currentTime = 0;
         }
     }
+
+    IEnumerator AttackMotion(int attackPower)
+    {
+        Vector3 originPos = transform.position;
+        Vector3 direction = (tower.position - transform.position).normalized;
+        Vector3 attackPos = originPos + direction * 0.5f;
+
+        float duration = 0.1f;
+        float elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            transform.position = Vector3.Lerp(originPos, attackPos, t);
+            yield return null;
+        }
+
+        Tower.Instance.HP -= attackPower;
+
+        elapsed = 0;
+        while (elapsed < duration) // 원래 위치로
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            transform.position = Vector3.Lerp(attackPos, originPos, t);
+            yield return null;
+        }
+    }
+
     public void OnDamageProcess(int damage)
     {
         currentHp -= damage; 
@@ -145,5 +176,11 @@ public class DroneAI : MonoBehaviour
     {
         state = DroneState.Die;
             
+    }
+
+    public void Heal(int amount)
+    {
+        currentHp = Mathf.Min(currentHp + amount, maxHp);
+        HpUI.SetActive(true);
     }
 }

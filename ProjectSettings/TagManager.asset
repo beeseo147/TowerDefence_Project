@@ -8,6 +8,7 @@ TagManager:
   - RoomLight
   - SamplesInfoPanel
   - Tower
+  - Healer
   layers:
   - Default
   - TransparentFX

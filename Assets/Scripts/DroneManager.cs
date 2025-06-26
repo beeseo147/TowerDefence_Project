@@ -47,20 +47,27 @@ public class DroneManager : MonoBehaviour
     }
     GameObject ChooseGhostByTime(float time)
     {
-        if (time < 10f)
+        int maxIndex = 0;
+
+        if (time < 20f)
         {
-            return droneFactory[1];
+            maxIndex = 0;
         }
-        else if (time < 30f)
+        else if (time < 40f)
         {
-            float rand = Random.value;
-            return rand < 0.5f ? droneFactory[0] : droneFactory[1];
+            maxIndex = 1;
+        }
+        else if (time < 60f)
+        {
+            maxIndex = 2;
         }
         else
         {
-            float rand = Random.value;
-            return rand < 0.8f ? droneFactory[0] : droneFactory[1];
+            maxIndex = 3;
         }
+
+        int index = Random.Range(0, maxIndex + 1);
+        return droneFactory[index];
     }
 
     /*
