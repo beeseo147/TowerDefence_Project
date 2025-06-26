@@ -6,32 +6,18 @@ using UnityEngine;
 /* -------------------- Dynamic Data -------------------- */
 public class PlayerRuntimeStat : MonoBehaviour
 {
-    [SerializeField] private PlayerStatBaseSO statBase;
-
-    public string Name { get; private set; }
-    public int Attack { get; private set; }
-    public float CritChance { get; private set; }
+    public string Name       { get; private set; }
+    public int    Attack     { get; private set; }
+    public float  CritChance { get; private set; }
+    public float  CritMult   { get; private set; }
 
     public event System.Action OnChanged;
+    
     [SerializeField] Transform startPoint; // 임시. 이동예정..
 
     private void Awake()
     {
-        if (null == statBase)
-        {
-            Debug.LogWarning("PlayerStatBaseSO is Null");
-            return;
-        }
-
-        Name = statBase.baseName;
-        Attack = statBase.baseAttackDamage;
-        CritChance = statBase.baseCritChance;
-
-        // Test
-        Debug.Log($"[TEST] PlayerName : {Name}");
-        Debug.Log($"[TEST] PlayerAttack : {Attack}");
-        Debug.Log($"[TEST] PlayerCritChance : {CritChance}");
-
+        // 임시
         if (startPoint == null)
         {
             var go = GameObject.FindWithTag("TeleportPoint");
@@ -45,14 +31,22 @@ public class PlayerRuntimeStat : MonoBehaviour
 
         transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
     }
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public void Init(PlayerStatBaseSO so)
     {
-        
+        if (null == so)
+        {
+            Debug.LogWarning("PlayerStatBaseSO is Null");
+            return;
+        }
+
+        Name = so.baseName; // TODO : Get input values Later..
+
+                Attack = so.baseAttackDamage;
+        CritChance = so.baseCritChance;
+        CritMult = so.baseCritMultiplier;
+        OnChanged?.Invoke();
     }
+    public void AddAttack(int value) { Attack += value; OnChanged?.Invoke(); }
+    public void AddCrit(float value) { CritChance += value; OnChanged?.Invoke(); }
 }

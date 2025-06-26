@@ -226,10 +226,13 @@ GameObject:
   m_Component:
   - component: {fileID: 443685714848336082}
   - component: {fileID: 2425257363767698159}
-  - component: {fileID: 5504661053912029334}
+  - component: {fileID: 3263935595371189698}
+  - component: {fileID: 3242108633669919199}
+  - component: {fileID: 5559980084878472548}
+  - component: {fileID: -3983828455473695206}
   - component: {fileID: 8170742787674335188}
-  - component: {fileID: 8991856669948522782}
   - component: {fileID: 5210474930863692493}
+  - component: {fileID: 8991856669948522782}
   - component: {fileID: 5961359722949623965}
   m_Layer: 10
   m_Name: Player
@@ -282,7 +285,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5504661053912029334
+--- !u!114 &3263935595371189698
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -297,6 +300,48 @@ MonoBehaviour:
   speed: 5
   jumpPower: 5
   gravity: -20
+--- !u!114 &3242108633669919199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167884855805620012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd2e054925668c49a09472f0420cc1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPoint: {fileID: 0}
+--- !u!114 &5559980084878472548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167884855805620012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4950f19e1f0fb4b4093f62d0093c6f24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseSO: {fileID: 11400000, guid: 0ecd30b1bd36e62449e25151003cd825, type: 2}
+--- !u!114 &-3983828455473695206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167884855805620012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c7886651ce33d47a62c820d7f0da34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 0}
+  attackDamageText: {fileID: 0}
+  critChanceText: {fileID: 0}
+  target: {fileID: 5559980084878472548}
 --- !u!120 &8170742787674335188
 LineRenderer:
   serializedVersion: 2
@@ -412,22 +457,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &8991856669948522782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2167884855805620012}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95eeae308e3715248b19d9058882fc5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teleportCircleUI: {fileID: 0}
-  isWarp: 1
-  warpTime: 0.5
-  post: {fileID: 3077150415774719874}
 --- !u!114 &5210474930863692493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,6 +475,22 @@ MonoBehaviour:
   grabRange: 1
   isRemoteGrab: 1
   remoteGrabDistance: 20
+--- !u!114 &8991856669948522782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167884855805620012}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95eeae308e3715248b19d9058882fc5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportCircleUI: {fileID: 0}
+  isWarp: 1
+  warpTime: 0.5
+  post: {fileID: 3077150415774719874}
 --- !u!114 &5961359722949623965
 MonoBehaviour:
   m_ObjectHideFlags: 0
