@@ -10,7 +10,8 @@ public class Tower : MonoBehaviour
     //데미지 표현할 UI
     public Transform damageUI; 
     public Image damageImage;
-    public Transform HpUI;
+    //public Image hpBarIamage;
+    //public Transform HpUI;
     public Action onTowerDestroy;
     public int initialHP = 10; //멤버변수, 필드
     int _hp = 0;
@@ -52,9 +53,9 @@ public class Tower : MonoBehaviour
         //UI 위치를 카메라의 near 값으로 설정
         damageUI.localPosition = new Vector3(0, 0, z);
         damageImage.enabled = false; //처음에는 비활성화
-        HpUI.parent = Camera.main.transform;
-        HpUI.localPosition = new Vector3(0.38f, 0.18f, z);
-        HpUI.GetComponentInChildren<Image>().fillAmount = 1;
+        //HpUI.parent = Camera.main.transform;
+        //HpUI.localPosition = new Vector3(0.38f, 0.18f, z);
+        //HpUI.GetComponentInChildren<Image>().fillAmount = 1;
     }
     IEnumerator DamageEvent()
     {
@@ -62,7 +63,8 @@ public class Tower : MonoBehaviour
         damageImage.enabled = true;
         yield return new WaitForSeconds(damageTime);
         damageImage.enabled = false;
-        HpUI.GetComponentInChildren<Image>().fillAmount = (float)HP / initialHP;
+        //hpBarIamage.fillAmount = (float)HP / initialHP;
+        //HpUI.GetComponentInChildren<Image>().fillAmount = (float)HP / initialHP;
     }
 
     // Update is called once per frame
