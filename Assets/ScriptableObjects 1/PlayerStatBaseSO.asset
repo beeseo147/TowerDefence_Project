@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52d3fcd1f306714b813cbb9be49b9c2, type: 3}
   m_Name: PlayerStatBaseSO
   m_EditorClassIdentifier: 
-  baseAttacDamage: 10
+  baseName: NoName
+  baseAttackDamage: 2
   baseCritChance: 0.05
-  baseMaxHP: 100
-  baseShieldCharges: 1
-  baseShieldDuration: 3
+  baseCritMultiplier: 2
