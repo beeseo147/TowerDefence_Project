@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class DroneAI : MonoBehaviour//, IFrozenObject
+public class DroneAI : MonoBehaviour, IFrozenObject
 {
     protected enum DroneState //드론의 상태 상수 정의
     {
@@ -212,5 +212,25 @@ public class DroneAI : MonoBehaviour//, IFrozenObject
         HpUI.SetActive(true);
         CancelInvoke(nameof(HideHpUI));
         Invoke(nameof(HideHpUI), 1.5f);
+    }
+    public void Freeze()
+    {
+        print("Freeze() 호출됨");
+        //얼음 효과 재생
+        //속도 감소
+        agent.speed *= 0.2f;
+    }
+    public void Unfreeze()
+    {
+        print("Unfreeze() 호출됨");
+        //얼음 효과 종료
+        //속도 증가
+        agent.speed *= 5f;
+    }
+    public IEnumerator UnfreezeCoroutine()
+    {
+        Freeze();
+        yield return new WaitForSeconds(10f);
+        Unfreeze();
     }
 }
