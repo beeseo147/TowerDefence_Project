@@ -6,7 +6,6 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField]
     public Dictionary<ItemData, int> items = new Dictionary<ItemData, int>();
-    public GameObject player;
     
     public void AddItem(ItemData data)
     {

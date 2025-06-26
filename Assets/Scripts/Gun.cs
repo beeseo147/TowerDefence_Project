@@ -13,7 +13,16 @@ public class Gun : MonoBehaviour
 
     [SerializeField] PlayerStatController playerStats;
 
-
+    //FrozenShot 아이템 사용 여부
+    public bool bIsFreezeShot = false;
+    public void FreezeShot()
+    {
+        //FronzenShot 아이템 사용 시에 특별한 효과 처리
+        //ex) 사운드 등등
+        Debug.Log("FreezeShot");
+        //맞은 적의 이동속도를 감소하는 효과 추가
+        bIsFreezeShot = true;
+    }
     void Start()
     {
         bulletEffect = bulletImpact.GetComponent<ParticleSystem>();
@@ -55,6 +64,16 @@ public class Gun : MonoBehaviour
             if (hitInfo.transform.name.Contains("Drone"))
             {
                 DroneAI drone = hitInfo.transform.GetComponent<DroneAI>();
+                if (bIsFreezeShot)
+                {
+                    drone.OnDamageProcess(0);
+                    bIsFreezeShot = false;
+                    drone.StartCoroutine(drone.UnfreezeCoroutine());
+                }
+                else
+                {
+                    drone.OnDamageProcess(1);
+                }
                 if (drone)
                 {
                     drone.OnDamageProcess(damage);
@@ -64,6 +83,14 @@ public class Gun : MonoBehaviour
             }
 
             PlayFireEffect(hitInfo);
+        }
+        if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Item"))
+        {
+            ICollectible collectible = hitInfo.transform.GetComponent<ICollectible>();
+            if (collectible != null && collectible.CanBeCollected(gameObject))
+            {
+                collectible.Collect(gameObject);
+            }
         }
     }
 
@@ -78,4 +105,5 @@ public class Gun : MonoBehaviour
         //부딪힌 지점 바로 위에서 이펙트가 보이도록 설정
         bulletImpact.position = hitinfo.point;
     }
+
 }

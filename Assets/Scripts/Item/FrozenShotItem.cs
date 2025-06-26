@@ -24,7 +24,7 @@ public class FrozenShotItem : MonoBehaviour, IUseItem
         if(gun != null)
         {
             print("Gun found, applying FrozenShot effect.");
-            //gun.FreezeShot();
+            gun.FreezeShot();
         }
         else
         {
