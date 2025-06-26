@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GrabObject;
 
-public class Bomb : MonoBehaviour
+public class Bomb : MonoBehaviour,IUseItem
 {
     //폭발 효과
     Transform explosion; 
     ParticleSystem expEffect;
     AudioSource expAudio;
     //폭발 범위
-    public float range = 5;
+    public float range = 4.5f;
     // 폭탄 중심에서의 최대 데미지와 최소 데미지
     public float maxDamage = 5f;
     public float minDamage = 1f;
-
+    private bool isGrabbed = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +43,63 @@ public class Bomb : MonoBehaviour
         explosion.position = transform.position;
         expEffect.Play();
         expAudio.Play();
-        //수류탄은 파괴
-        Destroy(gameObject);
+        //수류탄은 리턴
+        //Destroy(gameObject);
+        ItemObjectPool.Instance.ReturnItem(gameObject);
+    }
+    public void UseItem(GameObject player)
+    {
+        //print("Bomb UseItem called");
+        //Player 오른손 위치에 폭탄 오브젝트 지정
+        gameObject.transform.position = ARAVRInput.RHandPosition;
+        gameObject.transform.rotation = ARAVRInput.RHand.rotation;
+        gameObject.transform.parent = player.transform;
+        //print("Bomb instantiated at: " + gameObject.transform.position);
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        gameObject.GetComponent<ItemWorldObject>().enabled = false;
+        isGrabbed = true;
+    }
+    void Update()
+    {
+        //폭탄이 손에 잡혀있다면
+        if (isGrabbed)
+        {
+            //Input 발생시 폭탄을 전방으로 던진다.
+            if (ARAVRInput.GetDown(ARAVRInput.Button.HandTrigger))
+            {
+                gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                gameObject.transform.parent = null;
+                // 폭탄을 던지기 전에 궤적을 그리기 위한 LineRenderer 설정
+                // 실제 게임에서 어떻게 할지는 고민중
+                {
+                    LineRenderer trajectoryLine = gameObject.GetComponent<LineRenderer>();
+                    if (trajectoryLine == null)
+                    {
+                        trajectoryLine = gameObject.AddComponent<LineRenderer>();
+                    }
+
+                    trajectoryLine.startWidth = 0.1f;
+                    trajectoryLine.endWidth = 0.1f;
+                    trajectoryLine.positionCount = 50;
+
+                    // 물리 시뮬레이션으로 궤적 계산
+                    Vector3 velocity = ARAVRInput.RHandDirection * 1000 / gameObject.GetComponent<Rigidbody>().mass;
+                    Vector3 position = transform.position;
+                    Vector3 gravity = Physics.gravity;
+
+                    for (int i = 0; i < trajectoryLine.positionCount; i++)
+                    {
+                        float time = i * 0.1f; // 0.1초 간격으로 포인트 생성
+                        Vector3 newPosition = position + velocity * time + 0.5f * gravity * time * time;
+                        trajectoryLine.SetPosition(i, newPosition);
+                    }
+                }
+
+
+
+                gameObject.GetComponent<Rigidbody>().AddForce(ARAVRInput.RHandDirection * 1000);
+                isGrabbed = false;
+            }
+        }
     }
 }
