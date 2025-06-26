@@ -6,14 +6,16 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    public Transform bulletImpact; //ÃÑ¾Ë ÆÄÆí È¿°ú
-    ParticleSystem bulletEffect; //ÃÑ¾Ë ÆÄÆí ÆÄÆ¼Å¬ ½Ã½ºÅÛ
-    AudioSource bulletAudio; // ÃÑ¾Ë ¹ß»ç »ç¿îµå
-    public Transform crosshair; //Á¶ÁØÁ¡ Ç¥½Ã
-
+    public Transform bulletImpact; //ì´ì•Œ íŒŒí¸ íš¨ê³¼
+    ParticleSystem bulletEffect; //ì´ì•Œ íŒŒí¸ íŒŒí‹°í´ ì‹œìŠ¤í…œ
+    AudioSource bulletAudio; // ì´ì•Œ ë°œì‚¬ ì‚¬ìš´ë“œ
+    public Transform crosshair; //ì¡°ì¤€ì  í‘œì‹œ
+    
     [SerializeField] PlayerStatController playerStats;
-
-
+    
+    public bool bIsFreezeShot = false;
+    
+    // Start is called before the first frame update
     void Start()
     {
         bulletEffect = bulletImpact.GetComponent<ParticleSystem>();
@@ -23,20 +25,48 @@ public class Gun : MonoBehaviour
         if (playerStats == null)
             Debug.LogError("Gun Start() : PlayerStatController is Null");
         //    Cursor.visible = false;
+    //    Cursor.visible = false;
+        
+        // ì•„ì´í…œ ìˆ˜ì§‘ ì´ë²¤íŠ¸ êµ¬ë…
+        ItemWorldObject.OnItemCollected += HandleItemCollected;
+    }
+    
+    void OnDestroy()
+    {
+        // ì´ë²¤íŠ¸ êµ¬ë… í•´ì œ
+        ItemWorldObject.OnItemCollected -= HandleItemCollected;
+    }
+    
+    // ì•„ì´í…œ ìˆ˜ì§‘ ì´ë²¤íŠ¸ í•¸ë“¤ëŸ¬
+    private void HandleItemCollected(ItemData itemData, GameObject player)
+    {
+        Debug.Log($"ì•„ì´í…œ ìˆ˜ì§‘ë¨: {itemData.itemName} by {player.name}");
+        // ì—¬ê¸°ì„œ ì¶”ê°€ì ì¸ íš¨ê³¼ë‚˜ ì‚¬ìš´ë“œ ë“±ì„ ì²˜ë¦¬í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤
     }
 
     void Update()
     {
-        //Å©·Î½ºÇì¾î Ç¥½Ã
+        //í¬ë¡œìŠ¤í—¤ì–´ í‘œì‹œ
         ARAVRInput.DrawCrosshair(crosshair);
 
-        //¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯ÀÇ ÀÎµ¦½º Æ®¸®°Å¸¦ ´­·¶´Ù¸é 
+        Shot();
+    }
+    public void FreezeShot()
+    {
+        //FronzenShot ì•„ì´í…œ ì‚¬ìš© ì‹œì— íŠ¹ë³„í•œ íš¨ê³¼ ì²˜ë¦¬
+        //ex) ì‚¬ìš´ë“œ ë“±ë“±
+        Debug.Log("FreezeShot");
+        //ë§ì€ ì ì˜ ì´ë™ì†ë„ë¥¼ ê°ì†Œí•˜ëŠ” íš¨ê³¼ ì¶”ê°€
+        bIsFreezeShot = true;
+    }
+    void Shot()
+    {
+        //ì˜¤ë¥¸ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì¸ë±ìŠ¤ íŠ¸ë¦¬ê±°ë¥¼ ëˆŒë €ë‹¤ë©´ 
         if (ARAVRInput.GetDown(ARAVRInput.Button.IndexTrigger))
         {
-            //ÄÁÆ®·Ñ·¯ÀÇ Áøµ¿ Àç»ı
+            //ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì§„ë™ ì¬ìƒ
             ARAVRInput.PlayVibration(ARAVRInput.Controller.RTouch);
-
-            // µ¥¹ÌÁö °è»ê°ª ¹Ş¾Æ¿À±â
+            // ë°ë¯¸ì§€ ê³„ì‚°ê°’ ë°›ì•„ì˜¤ê¸°
             int damage = playerStats.GetCurrentAttack();
             Fire(damage);
         }
@@ -48,34 +78,63 @@ public class Gun : MonoBehaviour
         int ignore = (1 << LayerMask.NameToLayer("Player")) |
                      (1 << LayerMask.NameToLayer("Tower")) |
                      (1 << LayerMask.NameToLayer("Boundary"));
-
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 200f, ~ignore))
         {
-            // ·¹ÀÌ¿Í ºÎµúÈù ¿ÀºêÁ§Æ®°¡ µå·ĞÀÌ¶ó¸é.. 
+            // ë ˆì´ì™€ ë¶€ë”ªíŒ ì˜¤ë¸Œì íŠ¸ê°€ ë“œë¡ ì´ë¼ë©´.. 
             if (hitInfo.transform.name.Contains("Drone"))
+            Ray ray = new Ray(ARAVRInput.RHandPosition,
+                ARAVRInput.RHandDirection);
+            RaycastHit hitInfo;
+            int playerLayer = 1 << LayerMask.NameToLayer("Player");
+            int towerLayer = 1 << LayerMask.NameToLayer("Tower");
+         
+            int layerMask = playerLayer | towerLayer;
+            if (Physics.Raycast(ray, out hitInfo, 200, ~layerMask))
             {
                 DroneAI drone = hitInfo.transform.GetComponent<DroneAI>();
                 if (drone)
                 {
                     drone.OnDamageProcess(damage);
 
-                    // »ç¸Á ÆÇ´Ü ¹× ScoreManager.Instance.AddKill() È£Ãâ
+                    // ì‚¬ë§ íŒë‹¨ ë° ScoreManager.Instance.AddKill() í˜¸ì¶œ
+                    DroneAI drone = hitInfo.transform.GetComponent<DroneAI>();
+                    if (drone)
+                    {
+                        if(bIsFreezeShot)
+                        {
+                            drone.OnDamageProcess(0);
+                            bIsFreezeShot = false;
+                            //drone.StartCoroutine(drone.UnfreezeCoroutine());
+                        }
+                        else
+                        {
+                            drone.OnDamageProcess(1);
+                        }
+                    }
+                }
+                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Item"))
+                {
+                    ICollectible collectible = hitInfo.transform.GetComponent<ICollectible>();
+                    if (collectible != null && collectible.CanBeCollected(gameObject))
+                    {
+                        collectible.Collect(gameObject);
+                    }
                 }
             }
 
             PlayFireEffect(hitInfo);
         }
     }
-
     void PlayFireEffect(RaycastHit hitinfo)
     {
-        //ÃÑ¾Ë ÆÄÆí Ã³¸®
-        //ÃÑ¾Ë ÀÌÆåÆ®°¡ ÁøÇà ÁßÀÌ¸é ¸ØÃß°í Àç»ı
+        //ì´ì•Œ íŒŒí¸ ì²˜ë¦¬
+        //ì´ì•Œ ì´í™íŠ¸ê°€ ì§„í–‰ ì¤‘ì´ë©´ ë©ˆì¶”ê³  ì¬ìƒ
         bulletEffect.Stop();
         bulletEffect.Play();
-        //ºÎµúÈù ÁöÁ¡ÀÇ ¹æÇâÀ¸·Î ÃÑ¾ËÀÇ ÀÌÆåÆ® ¹æÇâÀ» ¼³Á¤
+        //ë¶€ë”ªíŒ ì§€ì ì˜ ë°©í–¥ìœ¼ë¡œ ì´ì•Œì˜ ì´í™íŠ¸ ë°©í–¥ì„ ì„¤ì •
         bulletImpact.forward = hitinfo.normal;
-        //ºÎµúÈù ÁöÁ¡ ¹Ù·Î À§¿¡¼­ ÀÌÆåÆ®°¡ º¸ÀÌµµ·Ï ¼³Á¤
+        //ë¶€ë”ªíŒ ì§€ì  ë°”ë¡œ ìœ„ì—ì„œ ì´í™íŠ¸ê°€ ë³´ì´ë„ë¡ ì„¤ì •
         bulletImpact.position = hitinfo.point;
     }
+    
 }

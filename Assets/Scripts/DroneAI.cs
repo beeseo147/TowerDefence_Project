@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class DroneAI : MonoBehaviour
+public class DroneAI : MonoBehaviour//, IFrozenObject
 {
     enum DroneState //드론의 상태 상수 정의
     {
@@ -65,7 +65,7 @@ public class DroneAI : MonoBehaviour
             case DroneState.Damage: Damage(); break;
             case DroneState.Die: Die(); break;
         }
-        print(state);
+        //print(state);
     }
     void Idle() 
     {
@@ -112,12 +112,7 @@ public class DroneAI : MonoBehaviour
         }
         else //죽었다면 폭발 이펙트 재생, 드론 파괴
         {
-            //폭발효과 위치 지정
-            explosion.position = transform.position;
-            //이펙트 재생
-            expEffect.Play();
-            expAudio.Play(); //이펙트 사운드 재생
-            Destroy(gameObject); //드론 없애기
+            Die();
         }
     }
     IEnumerator Damage()
@@ -137,10 +132,33 @@ public class DroneAI : MonoBehaviour
     void Die()
     { 
         agent.enabled = false;
+        
+        Debug.Log($"DroneAI Die() 호출됨: {transform.position}");
+        
+        // 아이템 드롭 처리
+        if (ItemDropManager.Instance != null)
+        {
+            Debug.Log("ItemDropManager.Instance가 존재함 - 아이템 드롭 시도");
+            print("드론의 현재 위치: " + transform.position);
+            ItemDropManager.Instance.OnEnemyDeath("Drone", transform.position);
+            
+        }
+        else
+        {
+            Debug.LogError("ItemDropManager.Instance가 null입니다! 씬에 ItemDropManager가 있는지 확인하세요.");
+        }
+            
+        //폭발효과 위치 지정
+        explosion.position = transform.position;
+        //이펙트 재생
+        expEffect.Play();
+        expAudio.Play(); //이펙트 사운드 재생
+        Destroy(gameObject); //드론 없애기
     }
     void GameOver()
     {
         state = DroneState.Die;
             
     }
+
 }
