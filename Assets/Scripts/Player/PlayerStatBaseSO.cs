@@ -6,8 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Config/PlayerStatBase")]
 public class PlayerStatBaseSO : ScriptableObject
 {
-    public string baseName       = "NoName";
-    public int baseAttackDamage  = 10;
-    public float baseCritChance  = 0.05f;
-    public float baseCritMultiplier  = 2f;  // 200% 배율
+    public string baseName           = "NoName";
+    public int    baseAttackDamage   = 10;
+    public float  baseCritChance     = 0.05f;
+    public float  baseCritMultiplier = 2f;  // 200% 배율
 }

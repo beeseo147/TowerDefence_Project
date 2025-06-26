@@ -12,21 +12,41 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField] Text attackDamageText;
     [SerializeField] Text critChanceText;
 
-    [Header("Target")]
-    [SerializeField] PlayerStatController target;
+    private PlayerStatController target;
 
-    void OnDisable() => target.Runtime.OnChanged -= Refresh;
 
     void Awake()
     {
+        target = GetComponent<PlayerStatController>();
         if (target == null)
-            target = GetComponentInParent<PlayerStatController>();
+        {
+            Debug.LogError($"PlayerHUD Awake() : PlayerStatController is Null");
+            return;
+        }
     }
+
+    
+    void OnEnable()
+    {
+        if (target.Runtime != null)
+        {
+            target.Runtime.OnChanged.AddListener(Refresh);
+            Refresh();
+        }
+    }
+
+    // 리스너 중복 등록 및 중복 함수 호출 방지
+    void OnDisable()
+    {
+        if (target != null && target.Runtime != null)
+            target.Runtime.OnChanged.RemoveListener(Refresh);
+    }
+
     void Start()
     {
         if (target && target.Runtime)
         {
-            target.Runtime.OnChanged += Refresh;
+            target.Runtime.OnChanged.AddListener(Refresh);
             Refresh();
         }
         else
