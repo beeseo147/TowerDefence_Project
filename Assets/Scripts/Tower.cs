@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/* ----- Tower Controller ----- */
 public class Tower : MonoBehaviour
 {
     public static Tower Instance; //Tower의 싱글톤 객체
@@ -12,19 +13,25 @@ public class Tower : MonoBehaviour
     public Image damageImage;
     //public Image hpBarIamage;
     //public Transform HpUI;
+
+    [SerializeField] TowerStatBaseSO baseSO;
+    public TowerRuntimeStat Runtime { get; private set; }
+
     public Action onTowerDestroy;
-    public int initialHP = 10; //멤버변수, 필드
-    int _hp = 0;
-    public int HP //프로퍼티 
+    float _hp = 100;
+    public float HP //프로퍼티 
     {
         get
         {
             return _hp;
         }
-        set{
+        set
+        {
             _hp = value;
+            Debug.Log($"Tower CurHp : {_hp}");
             StopAllCoroutines(); //기존 진행 중인 코루틴 해제
             StartCoroutine(DamageEvent()); //깜박거림을 처리할 코루틴 함수 호출
+            TakeDamage(1);
             if (_hp <= 0)
             {
                 onTowerDestroy?.Invoke();
@@ -41,11 +48,27 @@ public class Tower : MonoBehaviour
         {
             Instance = this; //싱글톤 객체 값 할당
         }
+
+        Runtime = GetComponent<TowerRuntimeStat>();
+        if (!Runtime)
+        {
+            Debug.LogError("PlayerStatController Awake() : PlayerRuntimeStat component missing");
+            enabled = false;
+            return;
+        }
+
+        if (!baseSO)
+        {
+            Debug.LogError("PlayerStatController Awake() : PlayerStatBaseSO is Null");
+            enabled = false;
+            return;
+        }
+
+        Runtime.Init(baseSO);
     }
     // Start is called before the first frame update
     void Start()
     {
-        _hp = initialHP; //타워 체력 초기화
         //카메라의 nearClipPlane값을 저장
         float z = Camera.main.nearClipPlane + 0.1f;
         //데미지 UI를 카메라의 자식으로 등록
@@ -57,6 +80,14 @@ public class Tower : MonoBehaviour
         //HpUI.localPosition = new Vector3(0.38f, 0.18f, z);
         //HpUI.GetComponentInChildren<Image>().fillAmount = 1;
     }
+
+    public void TakeDamage(float dmg)
+    {
+        _hp -= dmg;
+        Runtime.TakeDamage(dmg, baseSO.baseMaxHP);
+        //Runtime.OnHpChanged.Invoke(_hp, baseSO.baseMaxHP);
+        FlashHit();
+    }
     IEnumerator DamageEvent()
     {
         //0.1초 동안 빨간색 이미지를 활성화/비활성화하여 피격효과를 재생함
@@ -67,6 +98,11 @@ public class Tower : MonoBehaviour
         //HpUI.GetComponentInChildren<Image>().fillAmount = (float)HP / initialHP;
     }
 
+    void FlashHit()
+    {
+        StopAllCoroutines();
+        StartCoroutine(DamageEvent());
+    }
     // Update is called once per frame
     void Update()
     {
