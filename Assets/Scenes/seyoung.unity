@@ -1775,7 +1775,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083987dfaee3c494d8ac69286203a34d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPrefab: {fileID: 5768981574658038207, guid: 0d0eb9a5b247e054c93d357bed2b0643, type: 3}
+  bulletEffectPrefab: {fileID: 5768981574658038207, guid: 0d0eb9a5b247e054c93d357bed2b0643, type: 3}
+  healEffectPrefab: {fileID: 8087536607835785561, guid: 7192d711f8a6792468ac76908deefa3a, type: 3}
   effectParent: {fileID: 761435019}
 --- !u!4 &761435019
 Transform:

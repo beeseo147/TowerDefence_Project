@@ -61,7 +61,13 @@ public class Gun : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 200f, ~ignore))
         {
             // 레이와 부딪힌 오브젝트가 드론이라면.. 
-            if (hitInfo.transform.name.Contains("Drone"))
+
+            if (hitInfo.transform.name.Contains("Drone")) ;
+            int playerLayer = 1 << LayerMask.NameToLayer("Player");
+            int towerLayer = 1 << LayerMask.NameToLayer("Tower");
+         
+            int layerMask = playerLayer | towerLayer;
+            if (Physics.Raycast(ray, out hitInfo, 200, ~layerMask))
             {
                 DroneAI drone = hitInfo.transform.GetComponent<DroneAI>();
                 if (bIsFreezeShot)
@@ -76,9 +82,18 @@ public class Gun : MonoBehaviour
                 }
                 if (drone)
                 {
-                    drone.OnDamageProcess(damage);
-
                     // 사망 판단 및 ScoreManager.Instance.AddKill() 호출
+                    //DroneAI drone = hitInfo.transform.GetComponent<DroneAI>();
+                    if(bIsFreezeShot)
+                    {
+                        drone.OnDamageProcess(0);
+                        bIsFreezeShot = false;
+                        drone.StartCoroutine(drone.UnfreezeCoroutine());
+                    }
+                    else
+                    {
+                        drone.OnDamageProcess(damage);
+                    }
                 }
                 
             }

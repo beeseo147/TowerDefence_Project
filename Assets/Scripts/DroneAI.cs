@@ -143,21 +143,30 @@ public class DroneAI : MonoBehaviour, IFrozenObject
             HpUI.GetComponentInChildren<Image>().fillAmount = (float)currentHp / maxHp;
             StopAllCoroutines(); //실행되고 있는 코루틴 함수가 있다면 중지시킴
             StartCoroutine(Damage());
+
+            CancelInvoke(nameof(HideHpUI));
+            Invoke(nameof(HideHpUI), 1.5f);
         }
         else //죽었다면 폭발 이펙트 재생, 드론 파괴
         {
             Die();
         }
     }
+
+    private void HideHpUI()
+    {
+        HpUI.SetActive(false);
+    }
+
     IEnumerator Damage()
     {
         agent.enabled = false; //길찾기 중지
                                //자식 객체의 MeshRenderer에서 Material 얻어오기
         Material mat = GetComponentInChildren<MeshRenderer>().material;
         Color originalColor = mat.color; //원래 색 저장
-        mat.color = Color.red; //재질의 색을 빨간색으로 변경
+        mat.color = Color.black;  //재질의 색을 검은색으로 변경
    //     GetComponentInChildren<MeshRenderer>().enabled = false;
-        yield return new WaitForSeconds(0.1f); //0.1초 뒤에
+        yield return new WaitForSeconds(0.3f); //0.1초 뒤에
    //     GetComponentInChildren<MeshRenderer>().enabled = true;
         mat.color = originalColor; //원래 색으로 변경
         state = DroneState.Idle; // 상태를 Idle로 저장
@@ -197,8 +206,12 @@ public class DroneAI : MonoBehaviour, IFrozenObject
 
     public void Heal(int amount)
     {
+        if (currentHp >= maxHp) return;
         currentHp = Mathf.Min(currentHp + amount, maxHp);
+        HpUI.GetComponentInChildren<Image>().fillAmount = (float)currentHp / maxHp;
         HpUI.SetActive(true);
+        CancelInvoke(nameof(HideHpUI));
+        Invoke(nameof(HideHpUI), 1.5f);
     }
     public void Freeze()
     {
