@@ -20,5 +20,6 @@ public class HpUpItem : MonoBehaviour, IUseItem
     {
         print("HpUpItem UseItem 호출됨");
         Tower.Instance.HP += 3; // 플레이어의 HP를 3 증가시킴
+        ItemObjectPool.Instance.ReturnItem(gameObject);
     }
 }

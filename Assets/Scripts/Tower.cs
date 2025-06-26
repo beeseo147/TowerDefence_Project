@@ -55,8 +55,7 @@ public class Tower : MonoBehaviour
             Debug.LogError("PlayerStatController Awake() : PlayerRuntimeStat component missing");
             enabled = false;
             return;
-        }
-
+        } 
         if (!baseSO)
         {
             Debug.LogError("PlayerStatController Awake() : PlayerStatBaseSO is Null");

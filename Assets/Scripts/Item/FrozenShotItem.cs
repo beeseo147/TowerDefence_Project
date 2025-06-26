@@ -26,9 +26,6 @@ public class FrozenShotItem : MonoBehaviour, IUseItem
             print("Gun found, applying FrozenShot effect.");
             gun.FreezeShot();
         }
-        else
-        {
-            print("Gun not found.");
-        }
+        ItemObjectPool.Instance.ReturnItem(gameObject);
     }
 }
