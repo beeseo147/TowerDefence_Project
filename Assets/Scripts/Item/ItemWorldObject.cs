@@ -43,7 +43,7 @@ public class ItemWorldObject : MonoBehaviour, ICollectible
         
         // 위아래 움직임 애니메이션
         bobTime += bobSpeed * Time.deltaTime;
-        float newY = startPosition.y + Mathf.Sin(bobTime) * bobHeight;
+        float newY = startPosition.y + Mathf.Abs(Mathf.Sin(bobTime)) * bobHeight;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
     

@@ -186,14 +186,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0788d1b68299f047ad3cdc4ac103d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleDelayTime: 2
+  idleDelayTime: 1
   moveSpeed: 3
-  attackPower: 1
+  attackPower: 5
   tower: {fileID: 0}
-  attackRange: 3
+  attackRange: 7
   attackDelayTime: 2
   HpUI: {fileID: 1043982171372544737}
-  maxHp: 1
+  maxHp: 10
+  expEffect: {fileID: 19800006, guid: 8a4aceaf2957c044480166b429f4c7d0, type: 3}
 --- !u!195 &1343164811354559554
 NavMeshAgent:
   m_ObjectHideFlags: 0
