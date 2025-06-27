@@ -158,7 +158,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         HpUI.SetActive(false);
     }
 
-    protected IEnumerator Damage()
+    protected virtual IEnumerator Damage()
     {
         agent.enabled = false; //길찾기 중지
                                //자식 객체의 MeshRenderer에서 Material 얻어오기

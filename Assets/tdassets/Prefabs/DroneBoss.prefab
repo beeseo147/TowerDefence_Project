@@ -200,7 +200,7 @@ MonoBehaviour:
   - {fileID: 2880161073967909946, guid: e8c7a93334361ef44a7ebc23eaf36be1, type: 3}
   - {fileID: 2880161073967909946, guid: 18d72407360d1c340bf38a9d314ddd20, type: 3}
   spawnEffectPrefab: {fileID: 1000011128802252, guid: 96730f8640590934eacb6f860058e7f9, type: 3}
-  rotateSpeed: 10
+  rotateSpeed: 15
   rotateRadius: 15
   spawnIncreaseInterval: 15
   maxSpawnCount: 5

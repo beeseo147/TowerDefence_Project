@@ -130,7 +130,7 @@ public class DroneBoss : DroneAI
         currentHp -= damage;
         if (currentHp > 0)
         {
-            state = DroneState.Damage;
+            //state = DroneState.Damage;
             HpUI.GetComponentInChildren<Image>().fillAmount = (float)currentHp / maxHp;
             StopAllCoroutines(); //실행되고 있는 코루틴 함수가 있다면 중지시킴
             StartCoroutine(Damage());
@@ -141,6 +141,17 @@ public class DroneBoss : DroneAI
             Die();
         }
     }
+
+    protected override IEnumerator Damage()
+    {
+        Material mat = GetComponentInChildren<MeshRenderer>().material;
+        Color originalColor = mat.color; //원래 색 저장
+        mat.color = Color.black;  //재질의 색을 검은색으로 변경
+        //     GetComponentInChildren<MeshRenderer>().enabled = false;
+        yield return new WaitForSeconds(0.2f);
+        //     GetComponentInChildren<MeshRenderer>().enabled = true;
+        mat.color = originalColor;
+    }//원래 색으로 변경
 
     protected override void Die()
     {
