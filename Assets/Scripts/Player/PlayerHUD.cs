@@ -57,6 +57,6 @@ public class PlayerHUD : MonoBehaviour
     {
         nameText.text         = ($"이름 : {target.Runtime.name.ToString()}");
         attackDamageText.text = ($"공격력 : {target.Runtime.Attack.ToString()}");
-        critChanceText.text   = ($"치명타 확률 : {target.Runtime.CritChance:P0}%");
+        critChanceText.text = $"크리티컬 확률 : {target.Runtime.CritChance:F2}%";
     }
 }

@@ -27,7 +27,10 @@ public class PlayerStatController : MonoBehaviour
         Runtime.Init(baseSO);
     }
 
-    // юс╫ц
+    void Start()
+    {
+        StageManager.Instance.onStageChange += Upgrade;
+    }
     public void ApplyStageBonus(int atk, float crit)
     {
         Runtime.AddAttack(atk);
@@ -51,5 +54,19 @@ public class PlayerStatController : MonoBehaviour
     public void OnEnemyKilled()
     {
         ScoreManager.Instance.AddKill();
+    }
+
+    public void Upgrade(int stagenum)
+    {
+        switch (stagenum)
+        {
+            case 2:
+            case 4:
+            case 6:
+                {
+                    ApplyStageBonus(1, 0.05f);
+                    break;
+                }
+        }
     }
 }
