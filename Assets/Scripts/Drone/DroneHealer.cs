@@ -10,7 +10,7 @@ public class DroneHealer : DroneAI
     [SerializeField] GameObject healEffectPrefab;
 
     public float healRange = 3f;
-    public int healAmount = 1;
+    public int healAmount = 5;
     public float healInterval = 3f;
 
     private DroneAI healTarget;

@@ -11,7 +11,7 @@ public class StageManager : MonoBehaviour
     //일정 시간이 지나면 스테이지 변경
     public int stage = 1;
     public int maxStage = 10;
-    public float stageTime = 20;
+    public float stageTime = 30;
     public float currentTime = 0;
     public Action<int> onStageChange;
     public void NextStage()

@@ -30,19 +30,19 @@ public class DroneAI : MonoBehaviour, IFrozenObject
     public GameObject HpUI;
     //private 변수도 유니티 에디터에서 보이게 하는 어트리뷰트
     [SerializeField] //private속성 이지만 에디터에 노출이 된다.
-    private int maxHp = 3;
-    private int currentHp = 0;
+    protected int maxHp = 3;
+    protected int currentHp = 0;
     //폭발효과 오브젝트
    
-    Transform explosion;
-    ParticleSystem expEffect;
-    AudioSource expAudio;
+    protected Transform explosion;
+    public ParticleSystem expEffect;
+    protected AudioSource expAudio;
 
     public int CurrentHp => currentHp;
     public int MaxHp => maxHp;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         //타워 오브젝트를 찾는다(목적지)
         tower = GameObject.Find("Tower").transform;
@@ -133,7 +133,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         }
     }
 
-    public void OnDamageProcess(int damage)
+    public virtual void OnDamageProcess(int damage)
     {
         currentHp -= damage; 
         if (currentHp > 0)
@@ -158,7 +158,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         HpUI.SetActive(false);
     }
 
-    IEnumerator Damage()
+    protected IEnumerator Damage()
     {
         agent.enabled = false; //길찾기 중지
                                //자식 객체의 MeshRenderer에서 Material 얻어오기
@@ -172,7 +172,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         state = DroneState.Idle; // 상태를 Idle로 저장
         currentTime = 0; //경과 시간 초기화 
     }
-    void Die()
+    protected virtual void Die()
     { 
         agent.enabled = false;
         
