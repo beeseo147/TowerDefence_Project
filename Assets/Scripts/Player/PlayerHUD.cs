@@ -25,7 +25,7 @@ public class PlayerHUD : MonoBehaviour
         }
     }
 
-    
+
     void OnEnable()
     {
         if (target.Runtime != null)
@@ -55,7 +55,7 @@ public class PlayerHUD : MonoBehaviour
 
     void Refresh()
     {
-        nameText.text         = ($"이름 : {target.Runtime.name.ToString()}");
+        nameText.text = ($"이름 : {target.Runtime.name.ToString()}");
         attackDamageText.text = ($"공격력 : {target.Runtime.Attack.ToString()}");
         critChanceText.text = $"크리티컬 확률 : {target.Runtime.CritChance:F2}%";
     }
