@@ -189,12 +189,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleDelayTime: 1
   moveSpeed: 0.8
-  attackPower: 1
+  attackPower: 5
   tower: {fileID: 0}
   attackRange: 15
   attackDelayTime: 2
   HpUI: {fileID: 1043982171372544737}
-  maxHp: 2
+  maxHp: 20
+  expEffect: {fileID: 19800006, guid: 8a4aceaf2957c044480166b429f4c7d0, type: 3}
   firePoint: {fileID: 8117470688124425884}
   rayDistance: 30
   targetMask:
