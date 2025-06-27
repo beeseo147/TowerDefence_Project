@@ -121,7 +121,8 @@ public class DroneAI : MonoBehaviour, IFrozenObject
             yield return null;
         }
 
-        Tower.Instance.HP -= attackPower;
+        Tower.Instance.TakeDamage(attackPower);
+        //Tower.Instance.HP -= attackPower;
 
         elapsed = 0;
         while (elapsed < duration) // 원래 위치로

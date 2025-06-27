@@ -10,7 +10,7 @@ public class CamRotate : MonoBehaviour
     // 현재각도
     Vector3 angle;
     // 마우스감도
-    public float sensitivity = 200;
+    public float sensitivity = 6;
 
     void Start()
     {

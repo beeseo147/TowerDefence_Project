@@ -45,7 +45,8 @@ public class DroneShooter : DroneAI
                     Quaternion rot = Quaternion.LookRotation(direction);
                     EffectPoolManager.Instance.GetBulletEffect(firePoint.position, rot);
 
-                    Tower.Instance.HP -= attackPower;
+                    Tower.Instance.TakeDamage(attackPower);
+                    //Tower.Instance.HP -= attackPower;
                 }
             }
             currentTime = 0;
