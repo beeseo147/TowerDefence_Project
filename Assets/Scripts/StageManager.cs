@@ -39,7 +39,8 @@ public class StageManager : MonoBehaviour
             currentTime = 0;
         }
     }
-
+    
+    [ContextMenu("NextStage")]
     public void NextStage()
     {
         stage++;    
