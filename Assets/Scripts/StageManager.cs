@@ -14,6 +14,7 @@ public class StageManager : MonoBehaviour
     public float stageTime = 30;
     public float currentTime = 0;
     public Action<int> onStageChange;
+    [ContextMenu("NextStage")]
     public void NextStage()
     {
         stage++;
