@@ -6,6 +6,7 @@ public class PlayerMove : MonoBehaviour
 {
     public float speed = 5f;//이동 속도
     CharacterController cc;
+    public GameObject inventoryUI;
     public float jumpPower = 5; //점프 파워
     bool isJumping = false;
 
@@ -15,6 +16,7 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        inventoryUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -46,5 +48,24 @@ public class PlayerMove : MonoBehaviour
         dir.y = yVelocity;
         //이동을 한다.
         cc.Move(dir * speed * Time.deltaTime);
+        if(Input.GetKeyDown(KeyCode.Tab) && inventoryUI.activeSelf == false)
+        {
+            OnOpenInventory();
+        }
+        if(Input.GetKeyDown(KeyCode.Escape) && inventoryUI.activeSelf == true)
+        {
+            OnCloseInventory();
+        }
+    }
+    void OnOpenInventory()
+    {
+        //인벤토리 활성화시 게임 정지 
+        inventoryUI.SetActive(true);
+        Time.timeScale = 0;
+    }
+    void OnCloseInventory()
+    {
+        inventoryUI.SetActive(false);
+        Time.timeScale = 1;
     }
 }

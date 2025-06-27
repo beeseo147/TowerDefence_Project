@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ed9a1a05cdbde4abace4aed3c20401, type: 3}
   m_Name: FrozenGun
   m_EditorClassIdentifier: 
-  itemName: "\uC5BC\uC74C\uCD1D"
+  itemName: FrozenGun
   itemDescription: "\uC0C1\uB300\uC758 \uC774\uB3D9\uC18D\uB3C4\uB97C \uC7A0\uC2DC
     \uB290\uB824\uC9C0\uAC8C \uB9CC\uB4E0\uB2E4."
   id: 1

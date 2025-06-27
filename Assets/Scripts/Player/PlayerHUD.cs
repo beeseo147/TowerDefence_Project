@@ -35,7 +35,7 @@ public class PlayerHUD : MonoBehaviour
         }
     }
 
-    // ¸®½º³Ê Áßº¹ µî·Ï ¹× Áßº¹ ÇÔ¼ö È£Ãâ ¹æÁö
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ßºï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ßºï¿½ ï¿½Ô¼ï¿½ È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     void OnDisable()
     {
         if (target != null && target.Runtime != null)
@@ -57,6 +57,6 @@ public class PlayerHUD : MonoBehaviour
     {
         nameText.text = ($"{target.Runtime.name.ToString()}");
         attackDamageText.text = ($"{target.Runtime.Attack.ToString()}");
-        critChanceText.text = ($"{target.Runtime.CritChance:P0}%");
+        critChanceText.text = ($"{target.Runtime.CritChance:P0}");
     }
 }

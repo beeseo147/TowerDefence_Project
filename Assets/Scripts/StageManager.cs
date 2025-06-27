@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
 public class StageManager : MonoBehaviour
@@ -15,6 +16,9 @@ public class StageManager : MonoBehaviour
     public int maxStage = 10;
     public float stageTime = 20;
     public float currentTime = 0;
+    public float NowTime = 0.0f;
+    public Text NowTimeText;
+    public Text StageText;
     public Action<int> onStageChange;
 
     void Awake()
@@ -27,6 +31,7 @@ public class StageManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        StageText.text = $"Stage {stage}";
     }
 
     // Update is called once per frame
@@ -38,6 +43,10 @@ public class StageManager : MonoBehaviour
             NextStage();
             currentTime = 0;
         }
+        NowTime = currentTime;
+        // 시간 표시 00(분):00(초) 형식으로 표시 
+        NowTimeText.text = $"{Mathf.FloorToInt(NowTime / 60):D2}:{Mathf.FloorToInt(NowTime % 60):D2}";
+        
     }
     
     [ContextMenu("NextStage")]
@@ -48,6 +57,7 @@ public class StageManager : MonoBehaviour
         {
             stage = maxStage;
         }
+        StageText.text = $"STAGE {stage}";
         onStageChange?.Invoke(stage);
         Debug.Log($"<color=yellow>StageManager NextStage() : stage {stage}</color>");
     }

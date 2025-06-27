@@ -9,6 +9,8 @@ public class TowerHUD : MonoBehaviour
     [Header("Widgets")]
     [SerializeField] Image hpFillBarIamage;
     [SerializeField] Image shieldIamage;
+    [SerializeField] Image hpFillBarImagaeInventory;
+    [SerializeField] Text hpText;
     [SerializeField] Text shieldTimeText;
     [SerializeField] Text shieldCountText;
 
@@ -31,6 +33,8 @@ public class TowerHUD : MonoBehaviour
     public void UpdateHP(float curHp, float maxHp)
     {
         hpFillBarIamage.fillAmount = curHp / maxHp;
+        hpFillBarImagaeInventory.fillAmount = curHp / maxHp;
+        hpText.text = $"{curHp}/{maxHp}";
     }
 
     public void UpdateShieldTime(float remain, float maxvalue)
