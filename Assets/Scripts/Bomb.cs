@@ -10,12 +10,12 @@ public class Bomb : MonoBehaviour, IUseItem
     AudioSource expAudio;
 
     public float range = 4.5f;
-    public float maxDamage = 5f;
-    public float minDamage = 1f;
+    public float maxDamage = 10f;
+    public float minDamage = 2f;
 
     private bool isGrabbed = false;
 
-    public float throwSpeed = 100f; // 실제 던지는 속도
+    private float throwSpeed = 10f; // 실제 던지는 속도
 
     void Start()
     {
@@ -32,8 +32,12 @@ public class Bomb : MonoBehaviour, IUseItem
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
+            // Kinematic이 아닐 때만 velocity와 angularVelocity 설정
+            if (!rb.isKinematic)
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
             rb.isKinematic = true; // 재생성 시 물리 비활성화 (충돌 방지)
         }
         

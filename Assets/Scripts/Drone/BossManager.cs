@@ -38,4 +38,14 @@ public class BossManager : MonoBehaviour
 
         Debug.Log("Boss Spawned");
     }
+
+    // 게임 재시작 시 보스 상태 초기화
+    public void ResetGame()
+    {
+        Debug.Log("BossManager: 게임 데이터 초기화");
+        
+        bossSpawned = false;
+        
+        Debug.Log("BossManager: 게임 데이터 초기화 완료");
+    }
 }

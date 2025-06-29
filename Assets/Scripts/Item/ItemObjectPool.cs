@@ -190,6 +190,36 @@ public class ItemObjectPool : MonoBehaviour
         Debug.Log("모든 풀 정리 완료");
     }
     
+    // 모든 아이템 오브젝트를 완전히 삭제 (GameOver 시 사용)
+    public void DestroyAllItems()
+    {
+        // 1. 풀 정리
+        ClearAllPools();
+        
+        // 2. 씬에 있는 모든 ItemWorldObject 찾아서 제거
+        ItemWorldObject[] allItems = FindObjectsOfType<ItemWorldObject>();
+        Debug.Log($"씬에서 발견된 ItemWorldObject 개수: {allItems.Length}");
+        
+        foreach (ItemWorldObject item in allItems)
+        {
+            if (item != null && item.gameObject != null)
+            {
+                Debug.Log($"ItemWorldObject 제거: {item.name}");
+                DestroyImmediate(item.gameObject);
+            }
+        }
+        
+        // 3. ItemObjectPool 하위의 모든 자식 오브젝트도 제거 (혹시 남아있을 수 있는 것들)
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = transform.GetChild(i);
+            Debug.Log($"풀 하위 오브젝트 제거: {child.name}");
+            DestroyImmediate(child.gameObject);
+        }
+        
+        Debug.Log("모든 아이템 제거 완료");
+    }
+    
     void OnDestroy()
     {
         // 모든 풀 정리

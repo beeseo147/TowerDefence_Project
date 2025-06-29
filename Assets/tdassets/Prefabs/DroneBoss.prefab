@@ -187,6 +187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleDelayTime: 1
+  enemyType: Drone
+  droneType: 1
   moveSpeed: 0.5
   attackPower: 10
   tower: {fileID: 0}

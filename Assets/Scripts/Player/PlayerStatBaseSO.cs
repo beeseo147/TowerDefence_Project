@@ -9,5 +9,6 @@ public class PlayerStatBaseSO : ScriptableObject
     public string baseName           = "NoName";
     public int    baseAttackDamage   = 2;
     public float  baseCritChance     = 0.03f;
-    public float  baseCritMultiplier = 2f;  // 200% ¹èÀ²
+    public float  baseCritMultiplier = 2f;  // 200% ï¿½ï¿½ï¿½ï¿½
+    public int    baseEnemyKillCount = 0;
 }

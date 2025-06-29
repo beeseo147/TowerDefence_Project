@@ -38,7 +38,14 @@ public class DroneHealer : DroneAI
 
         else
         {
-            // Èú ´ë»ó ¾øÀ¸¸é Å¸¿ö ¹æÇâ ´ë±â
+            // Towerê°€ íŒŒê´´ë˜ì—ˆìœ¼ë©´ Die ìƒíƒœë¡œ ì „í™˜
+            if (tower == null)
+            {
+                state = DroneState.Die;
+                return;
+            }
+            
+            // íž ëŒ€ìƒì´ ì—†ìœ¼ë©´ íƒ€ì›Œ ê·¼ì²˜ ëŒ€ê¸°
             if (Vector3.Distance(transform.position, tower.position) > 5f)
             {
                 agent.isStopped = false;
@@ -53,7 +60,7 @@ public class DroneHealer : DroneAI
 
     protected override void Attack(int dummy)
     {
-        // °ø°Ý´ë½Å Èú
+        // ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ ï¿½ï¿½
         if (healTarget == null) return;
 
         float distance = Vector3.Distance(transform.position, healTarget.transform.position);
@@ -67,7 +74,7 @@ public class DroneHealer : DroneAI
         if (currentTime >= healInterval)
         {
             currentTime = 0;
-            //Debug.Log("Èú Àû¿ë!");
+            //Debug.Log("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!");
             healTarget.Heal(healAmount);
 
             EffectPoolManager.Instance.GetHealEffect(transform.position, Quaternion.identity);

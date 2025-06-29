@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Meta.WitAi.WitTexts;
+//using static Meta.WitAi.WitTexts;
 
 /* Player UI */
 public class PlayerHUD : MonoBehaviour
 {
     [Header("Widgets")]
     [SerializeField] Text nameText;
+    [SerializeField] Text inventoryNameText;
     [SerializeField] Text attackDamageText;
     [SerializeField] Text critChanceText;
-
+    
     private PlayerStatController target;
 
 
@@ -55,8 +56,9 @@ public class PlayerHUD : MonoBehaviour
 
     void Refresh()
     {
-        nameText.text = ($"{target.Runtime.name.ToString()}");
-        attackDamageText.text = ($"{target.Runtime.Attack.ToString()}");
-        critChanceText.text = ($"{target.Runtime.CritChance:P0}");
+        nameText.text = target.Runtime.Name;
+        inventoryNameText.text = target.Runtime.Name;
+        attackDamageText.text = target.Runtime.Attack.ToString();
+        critChanceText.text = target.Runtime.CritChance.ToString("P0");
     }
 }

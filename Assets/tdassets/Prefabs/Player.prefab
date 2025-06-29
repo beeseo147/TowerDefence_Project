@@ -229,11 +229,11 @@ GameObject:
   - component: {fileID: 3263935595371189698}
   - component: {fileID: 3242108633669919199}
   - component: {fileID: 5559980084878472548}
-  - component: {fileID: -3983828455473695206}
   - component: {fileID: 8170742787674335188}
   - component: {fileID: 5210474930863692493}
   - component: {fileID: 3709439946625192466}
   - component: {fileID: 7896577770806311945}
+  - component: {fileID: -3983828455473695206}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -298,6 +298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  inventoryUI: {fileID: 0}
   jumpPower: 5
   gravity: -20
 --- !u!114 &3242108633669919199
@@ -329,21 +330,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseSO: {fileID: 11400000, guid: 25add50fd59be274cb1836b5175b16cf, type: 2}
---- !u!114 &-3983828455473695206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2167884855805620012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3c7886651ce33d47a62c820d7f0da34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameText: {fileID: 0}
-  attackDamageText: {fileID: 0}
-  critChanceText: {fileID: 0}
 --- !u!120 &8170742787674335188
 LineRenderer:
   serializedVersion: 2
@@ -489,6 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83300249d1f96445b27de69d69bc290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemTexts: []
 --- !u!114 &7896577770806311945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,6 +492,21 @@ MonoBehaviour:
   crosshair: {fileID: 0}
   playerStats: {fileID: 0}
   bIsFreezeShot: 0
+--- !u!114 &-3983828455473695206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167884855805620012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c7886651ce33d47a62c820d7f0da34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 0}
+  attackDamageText: {fileID: 0}
+  critChanceText: {fileID: 0}
 --- !u!1 &2843270307144932775
 GameObject:
   m_ObjectHideFlags: 0

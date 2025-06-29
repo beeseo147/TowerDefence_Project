@@ -61,7 +61,7 @@ public class PlayerMove : MonoBehaviour
     {
         //인벤토리 활성화시 게임 정지 
         inventoryUI.SetActive(true);
-        Time.timeScale = 0;
+        Time.timeScale = 0.2f;
     }
     void OnCloseInventory()
     {

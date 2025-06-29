@@ -11,14 +11,14 @@ public class PlayerRuntimeStat : MonoBehaviour
     public int    Attack     { get; private set; }
     public float  CritChance { get; private set; }
     public float  CritMult   { get; private set; }
-
+    public int    EnemyKillCount { get; private set; }
     public UnityEvent OnChanged;
     
-    [SerializeField] Transform startPoint; // ÀÓ½Ã. ÀÌµ¿¿¹Á¤..
+    [SerializeField] Transform startPoint; // ï¿½Ó½ï¿½. ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½..
 
     private void Awake()
     {
-        // ÀÓ½Ã
+        // ï¿½Ó½ï¿½
         if (startPoint == null)
         {
             var go = GameObject.FindWithTag("TeleportPoint");
@@ -41,12 +41,15 @@ public class PlayerRuntimeStat : MonoBehaviour
             return;
         }
 
-        Name = so.baseName; // TODO : Get input values Later..
+        Name = PlayerPrefs.GetString("PlayerName", so.baseName);
+        print(Name);
         Attack = so.baseAttackDamage;
         CritChance = so.baseCritChance;
         CritMult = so.baseCritMultiplier;
+        EnemyKillCount = so.baseEnemyKillCount;
         OnChanged?.Invoke();
     }
     public void AddAttack(int value) { Attack += value; OnChanged?.Invoke(); }
     public void AddCrit(float value) { CritChance += value; OnChanged?.Invoke(); }
+    public void AddEnemyKillCount(int value) { EnemyKillCount += value; OnChanged?.Invoke(); }
 }

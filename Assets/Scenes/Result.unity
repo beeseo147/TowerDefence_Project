@@ -445,6 +445,64 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 85095614}
   m_CullTransparentMesh: 1
+--- !u!1 &194382853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 194382854}
+  - component: {fileID: 194382855}
+  m_Layer: 0
+  m_Name: ResultUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &194382854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194382853}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1090.4825, y: 656.38184, z: -3.093845}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &194382855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194382853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a0be73fe0657e42850a17b1a6e951c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNameText: {fileID: 1016893965}
+  killCountText: {fileID: 754932094}
+  stageText: {fileID: 7981164}
+  lasTime: {fileID: 1596629701}
+  totalRankText:
+  - {fileID: 1883817869}
+  - {fileID: 1830006976}
+  - {fileID: 1299308138}
+  - {fileID: 395581429}
+  - {fileID: 946123843}
+  boldnessText: {fileID: 829668148}
+  timeTakenText: {fileID: 1889924403}
+  itemCollectedText: {fileID: 433574119}
+  rankText: {fileID: 849313560}
 --- !u!1 &245818528
 GameObject:
   m_ObjectHideFlags: 0
@@ -5991,7 +6049,7 @@ GameObject:
   - component: {fileID: 1994974753}
   - component: {fileID: 1994974752}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ToRank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6060,7 +6118,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1994974753}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 194382855}
+        m_TargetAssemblyTypeName: ResultUI, Assembly-CSharp
+        m_MethodName: OnClickRankingButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1994974753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6187,7 +6257,7 @@ GameObject:
   - component: {fileID: 2019469273}
   - component: {fileID: 2019469272}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: ToHome
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6256,7 +6326,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2019469273}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 194382855}
+        m_TargetAssemblyTypeName: ResultUI, Assembly-CSharp
+        m_MethodName: OnClickHomeButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2019469273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6393,3 +6475,4 @@ SceneRoots:
   - {fileID: 1037852759}
   - {fileID: 1627932215}
   - {fileID: 981601440}
+  - {fileID: 194382854}

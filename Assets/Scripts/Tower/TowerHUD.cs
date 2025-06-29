@@ -25,6 +25,7 @@ public class TowerHUD : MonoBehaviour
             //Tower.Instance.Runtime.OnShieldAdded.AddListener(UpdateShieldCount);
             UpdateHP(rt.CurHp, rt.CurHp);
             //UpdateShieldTime(rt.maxShieldTime, rt.maxShieldTime);
+            shieldCountText.text = Tower.Instance.Runtime.ShieldCharge.ToString();
         }
         else
             Debug.LogError("PlayerHUD: target or Runtime missing");

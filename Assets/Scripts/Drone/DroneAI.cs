@@ -20,6 +20,10 @@ public class DroneAI : MonoBehaviour, IFrozenObject
     public float idleDelayTime = 2f; //대기 상태의 지속시간
     protected float currentTime; //경과 시간
 
+    private string droneName {get; set;}
+    [Header("적 타입 설정")]
+    public string enemyType = "Drone"; // Inspector에서 설정 가능
+    public EnemyType droneType = EnemyType.Drone; // Enum 버전 (더 안전)
     public float moveSpeed = 1; //공격 속도
     public int attackPower = 1;
     public Transform tower; //타워위치(타겟위치)
@@ -45,17 +49,30 @@ public class DroneAI : MonoBehaviour, IFrozenObject
     protected void Start()
     {
         //타워 오브젝트를 찾는다(목적지)
-        tower = GameObject.Find("Tower").transform;
-        explosion = GameObject.Find("Explosion").transform;
+        GameObject towerObj = GameObject.Find("Tower");
+        if (towerObj != null)
+        {
+            tower = towerObj.transform;
+        }
+        
+        GameObject explosionObj = GameObject.Find("Explosion");
+        if (explosionObj != null)
+        {
+            explosion = explosionObj.transform;
+            //explosion 오브젝트의 파티클과 오디오 컴포넌트 얻어오기
+            expEffect = explosion.GetComponent<ParticleSystem>();
+            expAudio = explosion.GetComponent<AudioSource>();
+        }
+        
         agent = GetComponent<NavMeshAgent>(); 
         agent.enabled = false; //내비게이션을 할당 받고 바로 비활성화
         agent.speed = moveSpeed; // 움직이는 속도 1
 
-        //explosion 오브젝트의 파티클과 오디오 컴포넌트 얻어오기
-        expEffect = explosion.GetComponent<ParticleSystem>();
-        expAudio = explosion.GetComponent<AudioSource>();
-
-        Tower.Instance.onTowerDestroy += GameOver;  
+        if (Tower.Instance != null)
+        {
+            Tower.Instance.onTowerDestroy += GameOver;  
+        }
+        
         currentHp = maxHp;
         HpUI.SetActive(false);
     }
@@ -75,6 +92,13 @@ public class DroneAI : MonoBehaviour, IFrozenObject
     }
     void Idle() 
     {
+        // Tower가 파괴되었으면 Die 상태로 전환
+        if (tower == null)
+        {
+            state = DroneState.Die;
+            return;
+        }
+        
         currentTime += Time.deltaTime; //시간을 잰다
         if (currentTime > idleDelayTime) //경과 시간이 대기 시간을 초과했다면
         {
@@ -84,6 +108,25 @@ public class DroneAI : MonoBehaviour, IFrozenObject
     }
     protected virtual void Move()
     {
+        // Tower가 파괴되었으면 Die 상태로 전환
+        if (tower == null)
+        {
+            state = DroneState.Die;
+            return;
+        }
+        
+        // NavMeshAgent가 유효한지 확인
+        if (agent == null || !agent.enabled || !agent.isOnNavMesh)
+        {
+            Debug.LogWarning($"DroneAI Move(): NavMeshAgent가 유효하지 않음 - {gameObject.name}");
+            // NavMeshAgent를 다시 활성화 시도
+            if (agent != null && !agent.enabled)
+            {
+                agent.enabled = true;
+            }
+            return;
+        }
+        
         //내비게이션의 목적지를 타워로 설정
         agent.SetDestination(tower.position);
         //공격 범위 안에 들어오면 공격 상태로 전환
@@ -106,6 +149,13 @@ public class DroneAI : MonoBehaviour, IFrozenObject
 
     IEnumerator AttackMotion(int attackPower)
     {
+        // Tower가 파괴되었으면 공격 중단
+        if (tower == null || Tower.Instance == null)
+        {
+            state = DroneState.Die;
+            yield break;
+        }
+        
         Vector3 originPos = transform.position;
         Vector3 direction = (tower.position - transform.position).normalized;
         Vector3 attackPos = originPos + direction * 0.5f;
@@ -121,8 +171,11 @@ public class DroneAI : MonoBehaviour, IFrozenObject
             yield return null;
         }
 
-        Tower.Instance.TakeDamage(attackPower);
-        //Tower.Instance.HP -= attackPower;
+        // Tower가 여전히 존재할 때만 데미지 적용
+        if (Tower.Instance != null)
+        {
+            Tower.Instance.TakeDamage(attackPower);
+        }
 
         elapsed = 0;
         while (elapsed < duration) // 원래 위치로
@@ -164,12 +217,18 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         agent.enabled = false; //길찾기 중지
                                //자식 객체의 MeshRenderer에서 Material 얻어오기
         Material mat = GetComponentInChildren<MeshRenderer>().material;
-        Color originalColor = mat.color; //원래 색 저장
-        mat.color = Color.black;  //재질의 색을 검은색으로 변경
-   //     GetComponentInChildren<MeshRenderer>().enabled = false;
-        yield return new WaitForSeconds(0.3f); //0.1초 뒤에
-   //     GetComponentInChildren<MeshRenderer>().enabled = true;
-        mat.color = originalColor; //원래 색으로 변경
+        Color originalColor = Color.white; // 기본 색상 저장
+        if(mat != null)
+        {
+            originalColor = mat.color; // 원래 색 저장
+            mat.color = Color.black;  // 재질의 색을 검은색으로 변경
+        }
+       
+        yield return new WaitForSeconds(0.1f); // 0.1초 뒤에
+        if(mat != null)
+        {
+            mat.color = originalColor; // 원래 색으로 변경
+        }
         state = DroneState.Idle; // 상태를 Idle로 저장
         currentTime = 0; //경과 시간 초기화 
     }
@@ -179,12 +238,20 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         
         Debug.Log($"DroneAI Die() 호출됨: {transform.position}");
         
+        // 플레이어 킬 카운트 증가
+        PlayerStatController playerStatController = FindObjectOfType<PlayerStatController>();
+        if (playerStatController != null)
+        {
+            playerStatController.OnEnemyKilled();
+        }
+        
         // 아이템 드롭 처리
         if (ItemDropManager.Instance != null)
         {
             Debug.Log("ItemDropManager.Instance가 존재함 - 아이템 드롭 시도");
             print("드론의 현재 위치: " + transform.position);
-            ItemDropManager.Instance.OnEnemyDeath("Drone", transform.position);
+            // Enum 버전 사용 (더 안전하고 깔끔)
+            ItemDropManager.Instance.OnEnemyDeath(droneType, transform.position);
             
         }
         else

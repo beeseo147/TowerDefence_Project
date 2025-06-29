@@ -9,11 +9,12 @@ public class InventoryButton : MonoBehaviour
     
     public void OnClickMainMenu()
     {
-        SceneManager.LoadScene("Lobby");
         Time.timeScale = 1;
+        SceneManager.LoadScene("Lobby");
     }
     public void OnClickHowtoPlay()
     {
+        StageManager.Instance.ClearUIReferences();
         ActiveHowtoPlay();
     }
     public void OnClickExit()
@@ -22,6 +23,7 @@ public class InventoryButton : MonoBehaviour
     }
     void ActiveHowtoPlay()
     {
+        print("HowtoPlayOpen");
         howtoPlayUI.SetActive(true);
     }
     void DeactiveHowtoPlay()
@@ -34,10 +36,19 @@ public class InventoryButton : MonoBehaviour
         
     }
 
+    // 인벤토리 UI가 꺼질 때 HowToPlay UI도 함께 끄기
+    void OnDisable()
+    {
+        if (howtoPlayUI != null && howtoPlayUI.activeSelf)
+        {
+            DeactiveHowtoPlay();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) || gameObject.activeSelf == true)
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(howtoPlayUI.activeSelf)
             {

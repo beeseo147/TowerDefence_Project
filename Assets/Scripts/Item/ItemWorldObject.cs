@@ -20,7 +20,7 @@ public class ItemWorldObject : MonoBehaviour, ICollectible
     {
         startPosition = transform.position;
         bobTime = UnityEngine.Random.Range(0f, 2f * Mathf.PI); // 랜덤 시작 시간
-        print(startPosition);
+        //print(startPosition);
     }
     
     // Object Pool에서 스폰될 때 호출
@@ -78,11 +78,34 @@ public class ItemWorldObject : MonoBehaviour, ICollectible
         // 이벤트 발생
         OnItemCollected?.Invoke(itemData, collector);
         
-        // 인벤토리에 추가
+        // 패시브 아이템인지 확인하고 즉시 효과 적용
+        IPassiveItem passiveItem = GetComponent<IPassiveItem>();
+        if (passiveItem != null)
+        {
+            print($"패시브 아이템 감지: {itemData.itemName} - 즉시 효과 적용");
+            passiveItem.ApplyPassiveEffect(collector);
+            
+            // 아이템 수집 횟수 증가 (ScoreManager)
+            if (ScoreManager.Instance != null)
+            {
+                ScoreManager.Instance.AddItemCollection();
+            }
+            
+            // 패시브 아이템은 즉시 사용되므로 인벤토리에 추가하지 않고 여기서 종료
+            return;
+        }
+        
+        // 사용 아이템의 경우 인벤토리에 추가
         var inventory = collector.GetComponent<Inventory>();
         if (inventory != null)
         {
             inventory.AddItem(this.itemData);
+            
+            // 아이템 수집 횟수 증가 (ScoreManager)
+            if (ScoreManager.Instance != null)
+            {
+                ScoreManager.Instance.AddItemCollection();
+            }
         }
         
         // Object Pool로 반환 (Destroy 대신)

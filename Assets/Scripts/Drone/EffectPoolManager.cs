@@ -59,4 +59,16 @@ public class EffectPoolManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         pool.Release(obj);
     }
+
+    // 게임 재시작 시 이펙트 풀 초기화
+    public void ResetGame()
+    {
+        Debug.Log("EffectPoolManager: 게임 데이터 초기화");
+        
+        // 모든 풀 정리
+        bulletPool?.Clear();
+        healPool?.Clear();
+        
+        Debug.Log("EffectPoolManager: 게임 데이터 초기화 완료");
+    }
 }

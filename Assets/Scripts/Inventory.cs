@@ -14,14 +14,14 @@ public class Inventory : MonoBehaviour
             items[data]++;
         else
             items.Add(data, 1);
+
         //사용 아이템인 Bomb 과 FrozenGun의 경우 아이템의 수량 텍스트 표시
-        if (data.itemName == "Boomb" || data.itemName == "FrozenGun")
+        if (data.itemName == "Bomb" || data.itemName == "FrozenGun")
             itemTexts[data.id].text = items[data].ToString();
     }
 
     public void InventoryUseItem(ItemData data)
     {
-        print("UseItem 호출됨");
         if (items.ContainsKey(data))
         {
             print("items.Count: " + items.Count);            

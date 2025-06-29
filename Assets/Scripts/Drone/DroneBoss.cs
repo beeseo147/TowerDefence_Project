@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class DroneBoss : DroneAI
 {
-    [Header("ºĞ¿­ µå·Ğ ÇÁ¸®ÆÕ")]
+    [Header("ï¿½Ğ¿ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private GameObject[] splitDronePrefabs;
     [SerializeField] private GameObject spawnEffectPrefab;
 
-    [Header("º¸½º ÀÌµ¿")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½")]
     [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private float rotateRadius = 10f;
 
-    [Header("½Ã°£ °æ°ú¿¡ µû¶ó ¼ÒÈ¯ Áõ°¡")]
-    [SerializeField] private float spawnIncreaseInterval = 15f; // nÃÊ¸¶´Ù ¼ÒÈ¯ ¼ö +1
+    [Header("ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½")]
+    [SerializeField] private float spawnIncreaseInterval = 15f; // nï¿½Ê¸ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ +1
     [SerializeField] private int maxSpawnCount = 5;
 
     private int spawnCount = 1;
@@ -23,7 +23,7 @@ public class DroneBoss : DroneAI
     private float angle;
     private bool isRotating = false;
 
-    void Start()
+    new void Start()
     {
         base.Start();
 
@@ -68,12 +68,12 @@ public class DroneBoss : DroneAI
 
         float rad = angle * Mathf.Deg2Rad;
 
-        // »õ·Î¿î À§Ä¡ °è»ê (Å¸¿ö Áß½ÉÀ¸·Î ¿ø ±Ëµµ)
+        // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ (Å¸ï¿½ï¿½ ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ëµï¿½)
         Vector3 offset = new Vector3(Mathf.Cos(rad), 0, Mathf.Sin(rad)) * rotateRadius;
         Vector3 orbitPos = tower.position + offset;
         transform.position = orbitPos;
 
-        // Ç×»ó Å¸¿ö¸¦ ¹Ù¶óº¸µµ·Ï ¼³Á¤
+        // ï¿½×»ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸µï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Vector3 lookDir = (tower.position - transform.position).normalized;
         lookDir.y = 0f;
         if(lookDir != Vector3.zero)
@@ -87,7 +87,7 @@ public class DroneBoss : DroneAI
         currentTime += Time.deltaTime;
         spawnTimer += Time.deltaTime;
 
-        // ½Ã°£ °æ°ú¿¡ µû¶ó ¼ÒÈ¯ ¼ö Áõ°¡
+        // ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         float elapsed = Time.time - startTime;
         spawnCount = Mathf.Min(1 + Mathf.FloorToInt(elapsed / spawnIncreaseInterval), maxSpawnCount);
 
@@ -110,7 +110,7 @@ public class DroneBoss : DroneAI
             Vector3 offset = new Vector3(randomCircle.x, 0f, randomCircle.y);
             Vector3 spawnPos = transform.position + offset;
 
-            // ÀÌÆåÆ® ¸ÕÀú »ı¼º
+            // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (spawnEffectPrefab != null)
             {
                 GameObject fx = Instantiate(spawnEffectPrefab, spawnPos, Quaternion.identity);
@@ -120,7 +120,7 @@ public class DroneBoss : DroneAI
             int index = Random.Range(0, splitDronePrefabs.Length);
             GameObject selectedPrefab = splitDronePrefabs[index];
 
-            // µå·Ğ »ı¼º
+            // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             Instantiate(selectedPrefab, spawnPos, Quaternion.identity);
         }
     }
@@ -132,11 +132,11 @@ public class DroneBoss : DroneAI
         {
             //state = DroneState.Damage;
             HpUI.GetComponentInChildren<Image>().fillAmount = (float)currentHp / maxHp;
-            StopAllCoroutines(); //½ÇÇàµÇ°í ÀÖ´Â ÄÚ·çÆ¾ ÇÔ¼ö°¡ ÀÖ´Ù¸é ÁßÁö½ÃÅ´
+            StopAllCoroutines(); //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ ï¿½Ö´ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å´
             StartCoroutine(Damage());
 
         }
-        else //Á×¾ú´Ù¸é Æø¹ß ÀÌÆåÆ® Àç»ı, µå·Ğ ÆÄ±«
+        else //ï¿½×¾ï¿½ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ ï¿½Ä±ï¿½
         {
             Die();
         }
@@ -145,23 +145,31 @@ public class DroneBoss : DroneAI
     protected override IEnumerator Damage()
     {
         Material mat = GetComponentInChildren<MeshRenderer>().material;
-        Color originalColor = mat.color; //¿ø·¡ »ö ÀúÀå
-        mat.color = Color.black;  //ÀçÁúÀÇ »öÀ» °ËÀº»öÀ¸·Î º¯°æ
+        Color originalColor = mat.color; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        mat.color = Color.black;  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         //     GetComponentInChildren<MeshRenderer>().enabled = false;
         yield return new WaitForSeconds(0.2f);
         //     GetComponentInChildren<MeshRenderer>().enabled = true;
         mat.color = originalColor;
-    }//¿ø·¡ »öÀ¸·Î º¯°æ
+    }//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     protected override void Die()
     {
         agent.enabled = false;
 
-        //Æø¹ßÈ¿°ú À§Ä¡ ÁöÁ¤
+        //ï¿½ï¿½ï¿½ï¿½È¿ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
         explosion.position = transform.position;
-        //ÀÌÆåÆ® Àç»ı
+        //ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
         expEffect.Play();
-        expAudio.Play(); //ÀÌÆåÆ® »ç¿îµå Àç»ı
-        Destroy(gameObject); //µå·Ğ ¾ø¾Ö±â
+        expAudio.Play(); //ì´í™íŠ¸ ì‚¬ìš´ë“œ ì¬ìƒ
+        
+        // ë³´ìŠ¤ê°€ ì£½ìœ¼ë©´ ê²Œì„ í´ë¦¬ì–´ (ìŠ¹ë¦¬)
+        GameOverUI gameOverUI = FindObjectOfType<GameOverUI>();
+        if (gameOverUI != null)
+        {
+            gameOverUI.GameOver();
+        }
+        
+        Destroy(gameObject); //ë³´ìŠ¤ ì—†ì• ê¸°
     }
 }

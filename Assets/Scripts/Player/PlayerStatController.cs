@@ -23,8 +23,9 @@ public class PlayerStatController : MonoBehaviour
             enabled = false; 
             return;
         }
-
+        Debug.Log(PlayerPrefs.GetString("PlayerName", "NoName"));
         Runtime.Init(baseSO);
+        Debug.Log(Runtime.Name);
     }
 
     void Start()
@@ -41,7 +42,7 @@ public class PlayerStatController : MonoBehaviour
     {
         int damage = Runtime.Attack;
 
-        // Å©¸®Æ¼ÄÃ ÆÇÁ¤
+        // Å©ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         bool isCrit = UnityEngine.Random.value < Runtime.CritChance;
         if (isCrit)
         {

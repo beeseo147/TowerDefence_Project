@@ -53,7 +53,10 @@ public class VolumeController : MonoBehaviour
         SetupUIButtons();
         FindBGMAudioSources();
     }
-    
+    void OnEnable()
+    {
+        FindBGMAudioSources();
+    }
     void Update()
     {
         HandleContinuousVolumeChange();

@@ -16,9 +16,33 @@ public class GameOverUI : MonoBehaviour
         gameOverUI.transform.localPosition = new Vector3(0, 0, z); //UI 위치 카메라 근접 평면 위에 위치
         Tower.Instance.onTowerDestroy += GameOver;
     }
+    
     public void GameOver()
     {
         gameOverUI.SetActive(true);
+        
+
+        
+        // ScoreManager에 결과 저장 (실시간으로 추적된 아이템 수집 횟수 사용)
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.SaveResult();
+        }
+        // 게임 오버창 띄운 후 일정 시간 경과 후 결과창 로드
+        StartCoroutine(LoadResultAfterDelay());
+    }
+    
+    private IEnumerator LoadResultAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        LoadingManager.Instance.LoadSceneViaLoading("Result");
+        ItemObjectPool.Instance.ClearAllPools();
+        ItemObjectPool.Instance.DestroyAllItems();
+    }
+
+    public void OnClickRestart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     // Update is called once per frame
     void Update()
@@ -40,9 +64,5 @@ public class GameOverUI : MonoBehaviour
                 ExecuteEvents.Execute(hit.collider.gameObject, pointerData, ExecuteEvents.pointerClickHandler);
             }
         }
-    }
-    public void OnClickRestart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
