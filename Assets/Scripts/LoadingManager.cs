@@ -104,7 +104,7 @@ public class LoadingManager : MonoBehaviour
                 progressBar.value = progress;
                 
             if (progressText != null)
-                progressText.text = $"로딩 중... {(progress * 100):F0}%";
+                progressText.text = $"{(progress * 100):F0}%";
             
             // 90% 이상이면 씬 활성화 허용
             if (asyncLoad.progress >= 0.9f)
@@ -144,7 +144,7 @@ public class LoadingManager : MonoBehaviour
                 progressBar.value = progress;
                 
             if (progressText != null)
-                progressText.text = $"로딩 중... {(progress * 100):F0}%";
+                progressText.text = $"{(progress * 100):F0}%";
             
             if (asyncLoad.progress >= 0.9f)
             {
@@ -176,7 +176,7 @@ public class LoadingManager : MonoBehaviour
             if (progressBar != null)
                 progressBar.value = progress;
             if (progressText != null)
-                progressText.text = $"로딩 중... {(progress * 100):F0}%";
+                progressText.text = $"{(progress * 100):F0}%";
 
             timer += Time.deltaTime;
 
@@ -218,7 +218,7 @@ public class LoadingManager : MonoBehaviour
                 progressBar.value = progress;
                 
             if (progressText != null)
-                progressText.text = $"로딩 중... {(progress * 100):F0}%";
+                progressText.text = $"{(progress * 100):F0}%";
             
             if (asyncLoad.progress >= 0.9f)
             {

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 작성자 : 김동균
+// 공격력 증가 아이템 클래스
+// 기능 : 공격력 증가 아이템 효과 적용
 public class AttackUpItem : MonoBehaviour, IPassiveItem
 {
     [Header("공격력 증가량")]

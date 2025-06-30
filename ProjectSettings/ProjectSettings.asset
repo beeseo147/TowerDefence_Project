@@ -140,6 +140,8 @@ PlayerSettings:
   bundleVersion: 0.1
   preloadedAssets:
   - {fileID: 11400000, guid: de7db8f669625564cb4136a9e193b289, type: 2}
+  - {fileID: -2014466084881166196, guid: b9dc654aeeec1284eb8d9fd8b2156fcb, type: 2}
+  - {fileID: 11400000, guid: 2082aaf811ebdf64ba49c9df4ec7ce70, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -160,7 +162,8 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   androidMinAspectRatio: 1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Standalone: com.DefaultCompany.TowerDefense
   buildNumber:
     Bratwurst: 0
     Standalone: 0

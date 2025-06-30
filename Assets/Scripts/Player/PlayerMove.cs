@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// 작성자 : 윤여진
+// 플레이어 이동 클래스
+// 기능 : 플레이어 이동, 플레이어 점프, 플레이어 인벤토리 열기, 플레이어 인벤토리 닫기
 public class PlayerMove : MonoBehaviour
 {
     public float speed = 5f;//이동 속도
@@ -57,12 +59,14 @@ public class PlayerMove : MonoBehaviour
             OnCloseInventory();
         }
     }
+    // 인벤토리 열기
     void OnOpenInventory()
     {
         //인벤토리 활성화시 게임 정지 
         inventoryUI.SetActive(true);
         Time.timeScale = 0.2f;
     }
+    // 인벤토리 닫기
     void OnCloseInventory()
     {
         inventoryUI.SetActive(false);

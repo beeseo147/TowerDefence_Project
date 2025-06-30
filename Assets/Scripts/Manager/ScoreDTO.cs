@@ -1,5 +1,6 @@
 using System;
-
+// 작성자 : 김동균
+// 점수 정보를 저장하는 클래스
 [Serializable]
 public class ScoreDTO
 {

@@ -6,8 +6,12 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
+// 작성자 : 박세영
+// 드론 AI 클래스
+// 기능 : 드론 AI 상태 전환, 드론 AI 이동, 드론 AI 공격, 드론 AI 데미지 처리, 드론 AI 사망, 드론 AI 체력 회복, 드론 AI 얼리기, 드론 AI 얼림 해제    
 public class DroneAI : MonoBehaviour, IFrozenObject
 {
+    
     protected enum DroneState //드론의 상태 상수 정의
     {
         Idle,
@@ -45,7 +49,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
     public int CurrentHp => currentHp;
     public int MaxHp => maxHp;
 
-    // Start is called before the first frame update
+    // 드론 AI 시작
     protected void Start()
     {
         //타워 오브젝트를 찾는다(목적지)
@@ -77,7 +81,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         HpUI.SetActive(false);
     }
 
-    // Update is called once per frame
+    // 드론 AI 업데이트
     void Update()
     {
         switch (state)
@@ -90,6 +94,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         }
         //print(state);
     }
+    // 드론 AI 대기 상태
     void Idle() 
     {
         // Tower가 파괴되었으면 Die 상태로 전환
@@ -106,6 +111,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
             agent.enabled = true; //agent 활성화
         }
     }
+    // 드론 AI 이동 상태
     protected virtual void Move()
     {
         // Tower가 파괴되었으면 Die 상태로 전환
@@ -136,6 +142,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
             agent.enabled = false;
         }
     }
+    // 드론 AI 공격 상태
     protected virtual void Attack(int attackPower)
     {
         currentTime += Time.deltaTime; //시간을 재고
@@ -147,6 +154,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         }
     }
 
+    // 드론 AI 공격 모션
     IEnumerator AttackMotion(int attackPower)
     {
         // Tower가 파괴되었으면 공격 중단
@@ -187,6 +195,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         }
     }
 
+    // 드론 AI 데미지 처리
     public virtual void OnDamageProcess(int damage)
     {
         currentHp -= damage; 
@@ -207,11 +216,13 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         }
     }
 
+    // 드론 AI 체력 UI 숨기기
     private void HideHpUI()
     {
         HpUI.SetActive(false);
     }
 
+    // 드론 AI 데미지 처리
     protected virtual IEnumerator Damage()
     {
         agent.enabled = false; //길찾기 중지
@@ -232,6 +243,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         state = DroneState.Idle; // 상태를 Idle로 저장
         currentTime = 0; //경과 시간 초기화 
     }
+    // 드론 AI 사망 처리
     protected virtual void Die()
     { 
         agent.enabled = false;
@@ -266,12 +278,14 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         expAudio.Play(); //이펙트 사운드 재생
         Destroy(gameObject); //드론 없애기
     }
+    // 게임 오버 처리
     void GameOver()
     {
         state = DroneState.Die;
             
     }
 
+    // 드론 AI 체력 회복
     public void Heal(int amount)
     {
         if (currentHp >= maxHp) return;
@@ -281,6 +295,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         CancelInvoke(nameof(HideHpUI));
         Invoke(nameof(HideHpUI), 1.5f);
     }
+    // 드론 AI 얼리기
     public void Freeze()
     {
         print("Freeze() 호출됨");
@@ -288,6 +303,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         //속도 감소
         agent.speed *= 0.2f;
     }
+    // 드론 AI 얼림 해제
     public void Unfreeze()
     {
         print("Unfreeze() 호출됨");
@@ -295,6 +311,7 @@ public class DroneAI : MonoBehaviour, IFrozenObject
         //속도 증가
         agent.speed *= 5f;
     }
+    // 드론 AI 얼림 해제 코루틴
     public IEnumerator UnfreezeCoroutine()
     {
         Freeze();

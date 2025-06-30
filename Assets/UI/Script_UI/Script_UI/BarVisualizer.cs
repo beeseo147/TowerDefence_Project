@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// 작성자 : 현주옥
+// 바 비주얼라이저 클래스
+// 기능 : 바 비주얼라이저 설정, 바 비주얼라이저 시작, 바 비주얼라이저 정지, 바 비주얼라이저 일시정지/재개, 바 비주얼라이저 최소값 설정, 바 비주얼라이저 최대값 설정, 바 비주얼라이저 변화 속도 설정, 바 비주얼라이저 현재 값 반환, 바 비주얼라이저 활성화 상태 반환, 바 비주얼라이저 바 이미지 설정, 볼륨 연동 기능 메서드들
 public class BarVisualizer : MonoBehaviour
 {
     [Header("바 비주얼라이저 설정")]
@@ -45,7 +48,8 @@ public class BarVisualizer : MonoBehaviour
             uiStartVisualizer();
         }
     }
-    
+
+    // 바 비주얼라이저 업데이트
     void Update()
     {
         if (!uiIsActive || uiBarImage == null)

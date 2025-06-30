@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-//아이템 풀 관리
+// 작성자 : 김동균
+// 아이템 풀 관리
+// 기능 : 아이템 풀 관리, 아이템 풀 생성, 아이템 풀 정리, 아이템 풀 정보 출력
 public class ItemObjectPool : MonoBehaviour
 {
     public static ItemObjectPool Instance { get; private set; }

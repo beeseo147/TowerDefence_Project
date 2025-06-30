@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+// 작성자 : 공통
+//사용하지않음
 public class Guage : MonoBehaviour
 {
     [SerializeField] Image m_Image;
@@ -11,6 +14,7 @@ public class Guage : MonoBehaviour
     int m_maxValue;
     int m_value;
 
+    // 게이지 설정
     public void SetGuage(float value, float maxValue)
     {
         if (maxValue == 0) m_Image.fillAmount = 0f;
@@ -25,17 +29,18 @@ public class Guage : MonoBehaviour
             m_Image.color = Color.red;
         }
     }
+    // 게이지 텍스트 설정
     public void SetText(float value)
     {
         
     }
-    // Start is called before the first frame update
+    // 게이지 시작
     void Start()
     {
         SetGuage(100, 100);
     }
 
-    // Update is called once per frame
+    // 게이지 업데이트
     void Update()
     {
         if(m_ShadowImage != null)

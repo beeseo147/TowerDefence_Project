@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using static UnityEngine.Rendering.DebugUI;
 
+// 작성자 : 김동균
+// 스테이지 매니저 클래스
+// 기능 : 스테이지 매니저 초기화, 스테이지 매니저 로드, 스테이지 매니저 로드 비동기, 스테이지 매니저 로드 비동기 메서드
 public class StageManager : MonoBehaviour
 {
     public static StageManager Instance;
@@ -131,6 +134,7 @@ public class StageManager : MonoBehaviour
         Debug.Log("StageManager: 게임 데이터 초기화 완료");
     }
 
+    // 스테이지 매니저 초기화
     void Awake()
     {
         // Singleton
@@ -152,13 +156,14 @@ public class StageManager : MonoBehaviour
             StageTextInInventory.text = $"STAGE {stage}";
     }
     
+    // 스테이지 매니저 소멸
     void OnDestroy()
     {
         // 씬 로드 이벤트 구독 해제
         SceneManager.sceneLoaded -= OnSceneLoadedEvent;
     }
 
-    // Update is called once per frame
+    // 스테이지 매니저 업데이트
     void Update()
     {
         currentTime += Time.deltaTime;
@@ -182,6 +187,7 @@ public class StageManager : MonoBehaviour
         }
     }
     
+    // 스테이지 매니저 다음 스테이지
     [ContextMenu("NextStage")]
     public void NextStage()
     {

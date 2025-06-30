@@ -2,14 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyType
-{
-    Drone,
-    DroneBoss,
-    DroneShooter,
-    DroneHealer
-}
-
+// 작성자 : 김동균
+// 아이템 드롭 관리
+// 기능 : 아이템 드롭 관리, 아이템 드롭 테이블 관리, 아이템 드롭 확률 관리, 아이템 드롭 개수 관리, 아이템 드롭 위치 관리
 public class ItemDropManager : MonoBehaviour
 {
     public static ItemDropManager Instance { get; private set; }
@@ -17,7 +12,7 @@ public class ItemDropManager : MonoBehaviour
     [System.Serializable]
     public class DropTable
     {
-        public EnemyType enemyType; // Enum 사용으로 타입 안전성 확보
+        public string enemyType; // 적 타입 (예: "Drone", "Boss" 등)
         public ItemData[] possibleItems; // 드롭 가능한 아이템들
         public float dropChance = 10f; // 드롭 확률 (0-100)
         public int minDropCount = 1; // 최소 드롭 개수
@@ -41,7 +36,7 @@ public class ItemDropManager : MonoBehaviour
         }
     }
     
-    // 적이 죽었을 때 호출되는 메서드 (문자열 버전 - 기존 호환성)
+    // 적이 죽었을 때 호출되는 메서드
     public void OnEnemyDeath(string enemyType, Vector3 deathPosition)
     {
         
@@ -72,17 +67,11 @@ public class ItemDropManager : MonoBehaviour
         }
     }
     
-    // 적이 죽었을 때 호출되는 메서드 (Enum 버전 - 새로운 방식)
-    public void OnEnemyDeath(EnemyType enemyType, Vector3 deathPosition)
-    {
-        OnEnemyDeath(enemyType.ToString(), deathPosition);
-    }
-    
     private DropTable GetDropTable(string enemyType)
     {
         foreach (DropTable table in dropTables)
         {
-            if (table.enemyType.ToString() == enemyType)
+            if (table.enemyType == enemyType)
                 return table;
         }
         return null;

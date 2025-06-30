@@ -5,20 +5,24 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /* -------------------- Dynamic Data -------------------- */
+// 작성자 : 윤여진
+// 플레이어 런타임 클래스
+// 기능 : 플레이어 이름, 플레이어 공격력, 플레이어 크리티컬 확률, 플레이어 크리티컬 데미지, 플레이어 적 처치 횟수, 플레이어 변경 이벤트
 public class PlayerRuntimeStat : MonoBehaviour
 {
-    public string Name       { get; private set; }
-    public int    Attack     { get; private set; }
-    public float  CritChance { get; private set; }
-    public float  CritMult   { get; private set; }
-    public int    EnemyKillCount { get; private set; }
-    public UnityEvent OnChanged;
+    public string Name       { get; private set; } // 플레이어 이름
+    public int    Attack     { get; private set; } // 플레이어 공격력
+    public float  CritChance { get; private set; } // 플레이어 크리티컬 확률
+    public float  CritMult   { get; private set; } // 플레이어 크리티컬 데미지
+    public int    EnemyKillCount { get; private set; } // 플레이어 적 처치 횟수
+    public UnityEvent OnChanged; // 플레이어 변경 이벤트
     
-    [SerializeField] Transform startPoint; // �ӽ�. �̵�����..
+    [SerializeField] Transform startPoint; // 플레이어 시작 위치
 
+    // 플레이어 초기화
     private void Awake()
     {
-        // �ӽ�
+        // 플레이어 시작 위치 초기화
         if (startPoint == null)
         {
             var go = GameObject.FindWithTag("TeleportPoint");
@@ -33,6 +37,7 @@ public class PlayerRuntimeStat : MonoBehaviour
         transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
     }
 
+    // 플레이어 초기화
     public void Init(PlayerStatBaseSO so)
     {
         if (null == so)

@@ -3,24 +3,31 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
+// 작성자 : 김동균
+// 게임 결과 저장 및 랭크 계산 관리
 [System.Serializable]
 public class ScoreDataList
 {
     public List<ScoreDTO> scores = new List<ScoreDTO>();
 }
 
+// 작성자 : 김동균
+// 게임 결과 저장 및 랭크 계산 관리
 public static class ResultSaver
 {
+    // 랭킹 데이터 저장 경로 반환
     private static string GetSavePath()
     {
         return Path.Combine(Application.persistentDataPath, "rankings.json");
     }
     
+    // 최신 결과 저장 경로 반환
     private static string GetLatestResultPath()
     {
         return Path.Combine(Application.persistentDataPath, "latest_result.json");
     }
 
+    // 게임 결과 저장
     public static void SaveResult(ScoreDTO data)
     {
         // 1. 가장 최근 결과를 별도 파일로 저장 (ResultUI용)
@@ -48,6 +55,7 @@ public static class ResultSaver
         Debug.Log($"결과 저장됨: {path}, 총 {allScores.Count}개 기록");
     }
     
+    // 최신 결과 저장
     private static void SaveLatestResult(ScoreDTO data)
     {
         string json = JsonUtility.ToJson(data, true);
@@ -56,6 +64,7 @@ public static class ResultSaver
         Debug.Log($"최신 결과 저장됨: {path}");
     }
 
+    // 최신 결과 로드
     public static ScoreDTO LoadResult()
     {
         // 가장 최근에 플레이한 결과 반환 (ResultUI용)
@@ -80,6 +89,7 @@ public static class ResultSaver
         return allScores.Count > 0 ? allScores[0] : null;
     }
     
+    // 모든 결과 로드
     public static List<ScoreDTO> LoadAllResults()
     {
         string path = GetSavePath();
@@ -100,6 +110,7 @@ public static class ResultSaver
         return new List<ScoreDTO>();
     }
     
+    // 상위 랭킹 조회
     public static List<ScoreDTO> GetTopRankings(int count = 10)
     {
         List<ScoreDTO> allScores = LoadAllResults();

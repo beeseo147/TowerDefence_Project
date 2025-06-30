@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+
+// 작성자 : 김동균
+// 인벤토리 클래스
+// 기능 : 인벤토리 추가, 인벤토리 사용, 인벤토리 아이템 제거
 public class Inventory : MonoBehaviour
 {
     [SerializeField]
     public Dictionary<ItemData, int> items = new Dictionary<ItemData, int>();
     public Text[] itemTexts;
+
+    // 인벤토리 아이템 추가
     public void AddItem(ItemData data)
     {
         if (items.ContainsKey(data))
@@ -20,6 +26,7 @@ public class Inventory : MonoBehaviour
             itemTexts[data.id].text = items[data].ToString();
     }
 
+    // 인벤토리 아이템 사용
     public void InventoryUseItem(ItemData data)
     {
         if (items.ContainsKey(data))
@@ -43,6 +50,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    // 인벤토리 아이템 제거
     void InventoryRemoveItem(ItemData data)
     {
         if (items.ContainsKey(data))

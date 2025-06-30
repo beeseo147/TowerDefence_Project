@@ -4,19 +4,21 @@ using System.Collections.Generic;
 using Unity.Jobs;
 using UnityEngine;
 
+// ì‘ì„±ì : ê³µí†µ
+//ì‚¬ìš©í•˜ì§€ì•ŠìŒ
 public class GrabBomb : MonoBehaviour
 {
-    bool isGrabbing = false; //¹°Ã¼¸¦ Àâ°í ÀÖ´ÂÁö ¿©ºÎ
-    GameObject grabbedObject; // Àâ°í ÀÖ´Â ¹°Ã¼
-    public LayerMask grabbedLayer; //ÀâÀ» ¹°Ã¼ÀÇ Á¾·ù
-    public float grabRange = 0.2f; //ÀâÀ» ¼ö ÀÖ´Â °Å¸®
+    bool isGrabbing = false; //ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    GameObject grabbedObject; // ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Ã¼
+    public LayerMask grabbedLayer; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float grabRange = 0.2f; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Å¸ï¿½
 
-    Vector3 prevPos; //ÀÌÀü À§Ä¡
-    Quaternion prevRot; //ÀÌÀü ¹æÇâ
-    float throwPower = 10; //´øÁú Èû
+    Vector3 prevPos; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
+    Quaternion prevRot; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    float throwPower = 10; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
-    public bool isRemoteGrab = true; //¿ø°Å¸®¿¡¼­ ¹°Ã¼´Â Àâ´Â ±â´É È°¼ºÈ­ ¿©ºÎ
-    public float remoteGrabDistance = 20; //¿ø°Å¸®¿¡¼­ ¹°Ã¼¸¦ ÀâÀ» ¼ö ÀÖ´Â °Å¸®
+    public bool isRemoteGrab = true; //ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+    public float remoteGrabDistance = 20; //ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Å¸ï¿½
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +29,7 @@ public class GrabBomb : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isGrabbing == false) //¹°Ã¼¸¦ Àâ°í ÀÖÀ» ¶§
+        if (isGrabbing == false) //ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         {
             TryGrab();
         }
@@ -39,26 +41,26 @@ public class GrabBomb : MonoBehaviour
     void TryUnGrab()
     {
        //  print(ARAVRInput.RHandPosition + "    /     " + prevPos);
-        //´øÁú ¹æÇâ
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Vector3 throwDirection = (ARAVRInput.RHandPosition - prevPos);
         ///  print(ARAVRInput.RHandPosition + "    /     " + prevPos);
-        //  prevPos = ARAVRInput.RHandPosition; //À§Ä¡ ±â¾ï
-        //¹öÆ°À» ³õ¾Ò´Ù¸é
+        //  prevPos = ARAVRInput.RHandPosition; //ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
+        //ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½Ò´Ù¸ï¿½
         if (ARAVRInput.GetUp(ARAVRInput.Button.HandTrigger,
            ARAVRInput.Controller.RTouch))
         {
 
-            isGrabbing = false; //ÀâÁö ¾ÊÀº »óÅÂ·Î ÀüÈ¯
-            //¹°¸® ±â´É È°¼ºÈ­
+            isGrabbing = false; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­
             grabbedObject.GetComponent<Rigidbody>().isKinematic = false;
-            //¼Õ¿¡¼­ ÆøÅº ¶¼¾î³»±â
+            //ï¿½Õ¿ï¿½ï¿½ï¿½ ï¿½ï¿½Åº ï¿½ï¿½ï¿½î³»ï¿½ï¿½
             grabbedObject.transform.parent = null;
 
-            //´øÁö±â 
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
             //grabbedObject.GetComponent<Rigidbody>().velocity = throwDirection * throwPower;
             grabbedObject.GetComponent<Rigidbody>().velocity = ARAVRInput.RHandDirection * throwPower;
 
-            //ÀâÀº ¹°Ã¼ ¾øµµ·Ï ¼³Á¤
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             grabbedObject = null;
             
 
@@ -66,17 +68,17 @@ public class GrabBomb : MonoBehaviour
     }
     void TryGrab()
     {
-        //¿À¸¥ÂÊ ÇÚµåÆ®¸®°Å ¹öÆ°À» ´­·¶´Ù¸é
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½
         if (ARAVRInput.GetDown(ARAVRInput.Button.HandTrigger,
            ARAVRInput.Controller.RTouch))
         {
 
-            if (isRemoteGrab) //¿ø°Å¸® ¹°Ã¼ Àâ±â¸¦ »ç¿ëÇÑ´Ù¸é
+            if (isRemoteGrab) //ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½â¸¦ ï¿½ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½
             {
-                //¿À¸¥¼Õ ¹æÇâÀ¸·Î Ray »ı¼º
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ray ï¿½ï¿½ï¿½ï¿½
                 Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);
                 RaycastHit hitInfo;
-                //°¡»óÀÇ ±¸(0.5¹İÁö¸§)¸¦ ¹ß»çÇÏ¿© Ãæµ¹ÇÑ ¿ÀºêÁ§Æ® Á¤º¸¸¦ hitInfo¿¡ ÀúÀå
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½(0.5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï¿ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ hitInfoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 if (Physics.SphereCast(ray, 0.5f, out hitInfo, remoteGrabDistance,
                     grabbedLayer))
                 {
@@ -88,61 +90,61 @@ public class GrabBomb : MonoBehaviour
             }
 
 
-            //ÀÏÁ¤¿µ¿ª ¾È¿¡ ÀÖ´Â ¸ğµç ÆøÅº °ËÃâ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Åº ï¿½ï¿½ï¿½ï¿½
             Collider[] hitObjects = Physics.OverlapSphere
                 (ARAVRInput.RHandPosition, grabRange, grabbedLayer);
-            int closest = 0; //°¡Àå °¡±î¿î ÆøÅ» ÀÎµ¦½º
+            int closest = 0; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å» ï¿½Îµï¿½ï¿½ï¿½
             for (int i = 1; i < hitObjects.Length; i++)
             {
-                //¼Õ°ú °¡Àå °¡±î¿î ¹°Ã¼¿ÍÀÇ °Å¸®
+                //ï¿½Õ°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
                 Vector3 closestPos = hitObjects[closest].transform.position;
                 float closestDistance = Vector3.Distance(closestPos,
                     ARAVRInput.RHandPosition);
-                //´ÙÀ½ ¹°Ã¼¿Í ¼ÕÀÇ °Å¸®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
                 Vector3 nextPos = hitObjects[i].transform.position;
                 float nextDistance = Vector3.Distance(nextPos,
                     ARAVRInput.RHandPosition);
-                //´ÙÀ½ ¹°Ã¼¿ÍÀÇ °Å¸®°¡ ´õ °¡±õ´Ù¸é
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½
                 if (nextDistance < closestDistance)
                 {
                     closest = i;
                 }
             }
-            if (hitObjects.Length > 0) //°ËÃâµÈ ¿ÀºêÁ§Æ®°¡ ÀÖ´Â °æ¿ì
+            if (hitObjects.Length > 0) //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½
             {
-                isGrabbing = true; //ÀâÀº »óÅÂ·Î ÀüÈ¯
-                //ÀâÀº ¹°Ã¼ ÀúÀå
+                isGrabbing = true; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
                 grabbedObject = hitObjects[closest].gameObject;
-                //ÀâÀº ¹°Ã¼¸¦ ¿À¸¥¼ÕÀÇ ÀÚ½ÄÀ¸·Î µî·Ï
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                 grabbedObject.transform.parent = ARAVRInput.RHand;
-                //¹°¸® ±â´É Á¤Áö
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 grabbedObject.GetComponent<Rigidbody>().isKinematic = true;
-                //´øÁú ¹æÇâÀ» ±¸ÇÏ±â À§ÇÑ ¿À¸¥¼Õ ÀÌÀü À§Ä¡ ÀúÀå
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
                 prevPos = ARAVRInput.RHandPosition; 
             }
         }
         IEnumerator GrabbingAnimator()
         {
-            //¹°¸® ±â´É Á¤Áö
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             grabbedObject.GetComponent<Rigidbody>().isKinematic = true;
-            prevPos = ARAVRInput.RHandPosition ; //ÃÊ±â À§Ä¡ °ª ÁöÁ¤
-            prevRot = ARAVRInput.RHand.rotation; //ÃÊ±â È¸Àü °ª ÁöÁ¤
+            prevPos = ARAVRInput.RHandPosition ; //ï¿½Ê±ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            prevRot = ARAVRInput.RHand.rotation; //ï¿½Ê±ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             Vector3 startLocation = grabbedObject.transform.position;
             Vector3 targetLocation = ARAVRInput.RHandPosition +
                 ARAVRInput.RHandDirection * 0.1f;
 
-            float currentTime = 0; //½Ã°£À» Àç±â À§ÇÑ º¯¼ö
-            float finishTime = 0.2f; //0.2 ÃÊµ¿¾È ¹°Ã¼¸¦ ²ø¾î¿Â´Ù
-            float elapsedRate = currentTime / finishTime;//°æ°úÀ²
+            float currentTime = 0; //ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            float finishTime = 0.2f; //0.2 ï¿½Êµï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Â´ï¿½
+            float elapsedRate = currentTime / finishTime;//ï¿½ï¿½ï¿½ï¿½ï¿½
             while (elapsedRate < 1)
             {
-                currentTime += Time.deltaTime; //½Ã°£À» Àç°í
-                elapsedRate = currentTime / finishTime; //ÇöÀç½Ã°£/0.2ÃÊ = °æ°úÀ²
+                currentTime += Time.deltaTime; //ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+                elapsedRate = currentTime / finishTime; //ï¿½ï¿½ï¿½ï¿½Ã°ï¿½/0.2ï¿½ï¿½ = ï¿½ï¿½ï¿½ï¿½ï¿½
                 grabbedObject.transform.position = Vector3.Lerp(startLocation,
                     targetLocation, elapsedRate);
                 yield return null;
             }
-            //ÀâÀº ¹°Ã¼¸¦ ¼ÕÀÇ ÀÚ½ÄÀ¸·Î µî·Ï
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
             grabbedObject.transform.position = targetLocation;
             grabbedObject.transform.parent = ARAVRInput.RHand;
         }

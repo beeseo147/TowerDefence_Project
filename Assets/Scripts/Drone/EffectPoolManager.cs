@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
+// 작성자 : 박세영
+// 이펙트 풀 매니저 클래스
+// 기능 : 이펙트 풀 생성, 이펙트 풀 정리, 이펙트 풀 초기화
 public class EffectPoolManager : MonoBehaviour
 {
     [SerializeField] private GameObject bulletEffectPrefab;
@@ -14,6 +17,7 @@ public class EffectPoolManager : MonoBehaviour
     private IObjectPool<GameObject> bulletPool;
     private IObjectPool<GameObject> healPool;
 
+    // 이펙트 풀 매니저 초기화
     private void Awake()
     {
         if (Instance == null)
@@ -25,6 +29,7 @@ public class EffectPoolManager : MonoBehaviour
         healPool = CreatePool(healEffectPrefab);
     }
 
+    // 이펙트 풀 생성
     private IObjectPool<GameObject> CreatePool(GameObject prefab)
     {
         return new ObjectPool<GameObject>(
@@ -36,16 +41,19 @@ public class EffectPoolManager : MonoBehaviour
             );
     }
 
+    // 총 이펙트 생성
     public GameObject GetBulletEffect(Vector3 position, Quaternion rotation)
     {
         return GetAndRelease(bulletPool, position, rotation, 0.5f);
     }
 
+    // 힐 이펙트 생성
     public GameObject GetHealEffect(Vector3 position, Quaternion rotation)
     {
         return GetAndRelease(healPool, position, rotation, 0.5f);
     }
 
+    // 이펙트 생성
     private GameObject GetAndRelease(IObjectPool<GameObject> pool, Vector3 pos, Quaternion rot, float delay)
     {
         GameObject obj = pool.Get();
@@ -54,6 +62,7 @@ public class EffectPoolManager : MonoBehaviour
         return obj;
     }
 
+    // 이펙트 자동 해제
     private IEnumerator AutoRelease(IObjectPool<GameObject> pool, GameObject obj, float delay)
     {
         yield return new WaitForSeconds(delay);

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 작성자 : 김동균
+// 체력 회복 아이템 클래스
+// 기능 : 체력 회복 아이템 효과 적용
 public class HpUpItem : MonoBehaviour, IPassiveItem
 {
     [Header("체력 회복량")]
@@ -19,6 +22,7 @@ public class HpUpItem : MonoBehaviour, IPassiveItem
         
     }
 
+    // 패시브 아이템 효과 적용
     public void ApplyPassiveEffect(GameObject collector)
     {
         print($"HpUpItem 패시브 효과 적용됨 - 체력 {healAmount} 회복");
@@ -26,7 +30,7 @@ public class HpUpItem : MonoBehaviour, IPassiveItem
         // 타워 체력 회복 (음수 데미지로 힐링)
         if (Tower.Instance != null)
         {
-            Tower.Instance.TakeDamage(-healAmount);
+            Tower.Instance.Runtime.CurHp += 3;
         }
         else
         {

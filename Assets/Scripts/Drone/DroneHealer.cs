@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
 
+// 작성자 : 박세영
+// 힐러 드론 클래스
+// 기능 : 힐러 드론 이동, 힐러 드론 공격, 힐러 드론 체력 회복, 힐러 드론 얼리기, 힐러 드론 얼림 해제
 public class DroneHealer : DroneAI
 {
     [SerializeField] private float allySearchRadius = 10f;
@@ -15,6 +18,7 @@ public class DroneHealer : DroneAI
 
     private DroneAI healTarget;
 
+    // 힐러 드론 이동
     protected override void Move()
     {
         healTarget = FindLowestHpAlly();
@@ -58,9 +62,10 @@ public class DroneHealer : DroneAI
         }
     }
 
+    // 힐러 드론 공격
     protected override void Attack(int dummy)
     {
-        // ���ݴ�� ��
+        // 힐 대상이 없으면 공격 중단
         if (healTarget == null) return;
 
         float distance = Vector3.Distance(transform.position, healTarget.transform.position);
@@ -74,13 +79,14 @@ public class DroneHealer : DroneAI
         if (currentTime >= healInterval)
         {
             currentTime = 0;
-            //Debug.Log("�� ����!");
+            //Debug.Log("힐러 드론 공격!");
             healTarget.Heal(healAmount);
 
             EffectPoolManager.Instance.GetHealEffect(transform.position, Quaternion.identity);
         }
     }
 
+    // 힐러 드론 체력 회복
     private DroneAI FindLowestHpAlly()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, allySearchRadius, allyLayer);
@@ -103,6 +109,7 @@ public class DroneHealer : DroneAI
         return lowest;
     }
 
+    // 힐러 드론 체력 회복 범위 표시
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

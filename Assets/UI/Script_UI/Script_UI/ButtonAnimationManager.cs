@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+// 작성자 : 현주옥
+// 버튼 애니메이션 매니저 클래스
+// 기능 : 버튼 애니메이션 설정, 버튼 애니메이션 시작, 버튼 애니메이션 정지, 버튼 애니메이션 일시정지/재개, 버튼 애니메이션 최소값 설정, 버튼 애니메이션 최대값 설정, 버튼 애니메이션 변화 속도 설정, 버튼 애니메이션 현재 값 반환, 버튼 애니메이션 활성화 상태 반환, 버튼 애니메이션 바 이미지 설정, 볼륨 연동 기능 메서드들
 public class ButtonAnimationManager : MonoBehaviour
 {
     public enum AnimationDirection
@@ -31,6 +34,7 @@ public class ButtonAnimationManager : MonoBehaviour
     private bool uiIsAnimating = false;
     private bool uiIsInitialized = false; // 초기화 완료 여부
     
+    // 버튼 애니메이션 매니저 초기화
     void OnEnable()
     {
         // 초기화가 완료된 후에만 자동 시작
@@ -40,6 +44,7 @@ public class ButtonAnimationManager : MonoBehaviour
         }
     }
     
+    // 버튼 애니메이션 매니저 시작
     void Start()
     {
         uiInitializeButtons();

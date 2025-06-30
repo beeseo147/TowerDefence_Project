@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 작성자 : 김동균
+// 크리티컬 확률 증가 아이템 클래스
+// 기능 : 크리티컬 확률 증가 아이템 효과 적용
 public class CriticalUpItem : MonoBehaviour, IPassiveItem
 {
     [Header("크리티컬 확률 증가량")]
@@ -18,7 +21,7 @@ public class CriticalUpItem : MonoBehaviour, IPassiveItem
     {
         
     }
-
+    // 패시브 아이템 효과 적용
     public void ApplyPassiveEffect(GameObject collector)
     {
         print($"CriticalUpItem 패시브 효과 적용됨 - 크리티컬 확률 {critIncrease * 100}% 증가");

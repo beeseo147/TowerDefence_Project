@@ -1,30 +1,34 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// 작성자 : 현주옥
+// 플레이어 위치 표시 클래스
+// 기능 : 플레이어 위치 표시, 플레이어 위치 표시 속성 설정, 플레이어 위치 표시 속성 반환
 public class PlayerPositionDisplay : MonoBehaviour
 {
-    [Header("UI 설정")]
+    [Header("UI ????")]
     [SerializeField] private Text positionText;
 
-    [Header("플레이어 설정")]
+    [Header("?÷???? ????")]
     [SerializeField] private Transform playerTransform;
 
-    [Header("표시 설정")]
+    [Header("??? ????")]
     [SerializeField] private bool showDecimalPlaces = true;
     [SerializeField] private int decimalPlaces = 1;
 
+    // 플레이어 위치 표시 시작
     private void Start()
     {
-        // Text 컴포넌트가 할당되지 않았다면 자동으로 찾기
+        // Text 컴포넌트가 있으면 찾음
         if (positionText == null)
         {
             positionText = GetComponent<Text>();
         }
 
-        // Text 컴포넌트가 여전히 없다면 경고
+        // Text 컴포넌트가 없으면 경고 메시지 출력
         if (positionText == null)
         {
-            Debug.LogWarning("PlayerPositionDisplay: Text 컴포넌트를 찾을 수 없습니다. Inspector에서 할당해주세요.");
+            Debug.LogWarning("PlayerPositionDisplay: Text ????????? ??? ?? ???????. Inspector???? ??????????.");
         }
     }
 
@@ -37,7 +41,7 @@ public class PlayerPositionDisplay : MonoBehaviour
             string positionString;
             if (showDecimalPlaces)
             {
-                // 소수점이 0이어도 항상 표시되도록 정확한 포맷팅 사용
+                // 소수점 1자리까지 표시
                 string xStr = position.x.ToString("F1");
                 string yStr = position.y.ToString("F1");
                 string zStr = position.z.ToString("F1");
@@ -52,17 +56,17 @@ public class PlayerPositionDisplay : MonoBehaviour
         }
         else if (playerTransform == null)
         {
-            positionText.text = "플레이어가 할당되지 않음";
+            positionText.text = "플레이어 위치 정보를 표시할 수 없습니다.";
         }
     }
 
-    // Inspector에서 플레이어 할당을 위한 편의 메서드
+    // Inspector에서 플레이어 위치 정보를 표시할 수 없습니다.
     public void SetPlayer(Transform player)
     {
         playerTransform = player;
     }
 
-    // 소수점 표시 여부 토글
+    // 소수점 표시 토글
     public void ToggleDecimalPlaces()
     {
         showDecimalPlaces = !showDecimalPlaces;

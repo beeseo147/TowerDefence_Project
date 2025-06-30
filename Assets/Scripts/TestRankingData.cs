@@ -1,5 +1,8 @@
 using UnityEngine;
 
+// 작성자 : 김동균
+// 테스트 랭킹 데이터 클래스
+// 기능 : 테스트 랭킹 데이터 생성, 현재 게임 결과를 랭킹에 추가, 저장 경로 확인, 랭킹 데이터 초기화
 public class TestRankingData : MonoBehaviour
 {
     [Header("테스트 설정")]

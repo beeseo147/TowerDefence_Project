@@ -1,5 +1,8 @@
 using UnityEngine;
 
+// 작성자 : 현주옥
+// 카메라 회전 클래스
+// 기능 : 카메라 회전 설정, 카메라 회전 속도 설정, 카메라 자동 회전 설정, 카메라 회전 속도 반환, 카메라 자동 회전 상태 반환
 public class CameraRotator : MonoBehaviour
 {
     [Header("카메라 회전 설정")]

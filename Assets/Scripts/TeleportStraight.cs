@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
+// ì‘ì„±ì : ê³µí†µ
+// ì‚¬ìš©í•˜ì§€ì•ŠìŒ
 public class TeleportStraight : MonoBehaviour
 {
-    //ÅÚ·¹Æ÷Æ®¸¦ Ç¥½ÃÇÒ UI
+    //ï¿½Ú·ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ UI
     public Transform teleportCircleUI;
-    LineRenderer lr; //¼±À» ±×¸± ·»´õ·¯ 
-    //ÃÖÃÊÀÇ ÅÚ·¹Æ÷Æ® UIÀÇ Å©±â
+    LineRenderer lr; //ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½ï¿½ï¿½Æ® UIï¿½ï¿½ Å©ï¿½ï¿½
     Vector3 originScale = Vector3.one * 0.02f;
-    public bool isWarp = false; //¿öÇÁ »ç¿ë ¿©ºÎ
-    public float warpTime = 0.1f; //¿öÇÁ¿¡ °É¸®´Â ½Ã°£
-    public PostProcessVolume post; // »ç¿ëÇÏ°í ÀÖ´Â Æ÷½ºÆ®ÇÁ·Î¼¼½Ì º¼·ı ÄÄÆ÷³ÍÆ®
+    public bool isWarp = false; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float warpTime = 0.1f; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+    public PostProcessVolume post; // ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½Î¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 
     // Start is called before the first frame update
     void Start()
@@ -24,27 +26,27 @@ public class TeleportStraight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //¹öÆ°À» ´­·¶´Ù¸é
+        //ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½
         if (ARAVRInput.GetDown(ARAVRInput.Button.One,
             ARAVRInput.Controller.LTouch))
         {
-            lr.enabled = true; //¶óÀÎ·»´õ·¯ÀÇ ÄÄÆ÷³ÍÆ® È°¼ºÈ­
+            lr.enabled = true; //ï¿½ï¿½ï¿½Î·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® È°ï¿½ï¿½È­
         }
-        //¹öÆ°¿¡ ¼ÕÀ» ¶¼¸é
+        //ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         else if (ARAVRInput.GetUp(ARAVRInput.Button.One,
             ARAVRInput.Controller.LTouch))
         {
-            lr.enabled = false;//¶óÀÎ·»´õ·¯ÀÇ ÄÄÆ÷³ÍÆ® ºñÈ°¼ºÈ­
+            lr.enabled = false;//ï¿½ï¿½ï¿½Î·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­
             if (teleportCircleUI.gameObject.activeSelf)
             {
-                if (isWarp == false) //¿öÇÁ ±â´ÉÀÌ »ç¿ëÁß ¾Æ´Ò ¶§ ¼ø°£ÀÌµ¿
+                if (isWarp == false) //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½
                 {
-                    //Ä³¸¯ÅÍ ÄÁÆ®·Ñ·¯ ÄÄÆ÷³ÍÆ® ºñÈ°¼ºÈ­
+                    //Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­
                     GetComponent<CharacterController>().enabled = false;
-                    //ÅÚ·¹Æ÷Æ® UI À§Ä¡·Î ¼ø°£ ÀÌµ¿
+                    //ï¿½Ú·ï¿½ï¿½ï¿½Æ® UI ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
                     transform.position = teleportCircleUI.position +
                         Vector3.up;
-                    //Ä³¸¯ÅÍ ÄÁÆ®·Ñ·¯ ÄÄÆ÷³ÍÆ® ºñÈ°¼ºÈ­
+                    //Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­
                     GetComponent<CharacterController>().enabled = true;
                 }
                 else
@@ -56,37 +58,37 @@ public class TeleportStraight : MonoBehaviour
 
             teleportCircleUI.gameObject.SetActive(false);
         }
-            //¿ŞÂÊ ÄÁÆ®·Ñ·¯ÀÇ One¹öÆ° ´©¸£°í ÀÖÀ» ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ï¿½ï¿½ Oneï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             if (ARAVRInput.Get(ARAVRInput.Button.One,
             ARAVRInput.Controller.LTouch))
         {
-            //¿Ş¼ÕÀ» ±âÁØÀ¸·Î ·¹ÀÌ¸¦ »ı¼º
+            //ï¿½Ş¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
             Ray ray = new Ray(ARAVRInput.LHandPosition,
                 ARAVRInput.LHandDirection);
             RaycastHit hitInfo;
-            //Terrain¸¸ Ray Ãæµ¹ °ËÃâ
+            //Terrainï¿½ï¿½ Ray ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½
             int layer = 1 << LayerMask.NameToLayer("Terrain");
             if (Physics.Raycast(ray, out hitInfo, 200, layer))
             {
-                //ºÎµúÈù ÁöÁ¡¿¡ ÅÚ·¹Æ÷Æ® UI Ç¥½Ã
+                //ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½ï¿½ï¿½Æ® UI Ç¥ï¿½ï¿½
                 lr.SetPosition(0, ray.origin);
                 lr.SetPosition(1, hitInfo.point);
-                //ÅÚ·¹Æ÷Æ® UI È°¼ºÈ­
+                //ï¿½Ú·ï¿½ï¿½ï¿½Æ® UI È°ï¿½ï¿½È­
                 teleportCircleUI.gameObject.SetActive(true);
-                //ÅÚ¸®Æ÷Æ® UI À§Ä¡¿Í ¹æÇâ ¼³Á¤
+                //ï¿½Ú¸ï¿½ï¿½ï¿½Æ® UI ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 teleportCircleUI.position = hitInfo.point;
                 teleportCircleUI.forward = hitInfo.normal;
-                //ÅÚ·¹Æ÷Æ®ÀÇ UI°¡ °Å¸®¿¡µû¶ó º¸Á¤µÇµµ·Ï ¼³Á¤
+                //ï¿½Ú·ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ UIï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 teleportCircleUI.localScale = originScale *
                     Mathf.Max(1, hitInfo.distance);
             }
             else
             {
-                //RayÃæµ¹ÀÌ ¹ß»ıÇÏÁö ¾ÊÀ¸¸é 
-                //¶óÀÎ·»´õ·¯ÀÇ ³¡Á¡À» 200À¸·Î ¼³Á¤
+                //Rayï¿½æµ¹ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+                //ï¿½ï¿½ï¿½Î·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 200ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 lr.SetPosition(0, ray.origin);
                 lr.SetPosition(1, ray.origin + ARAVRInput.LHandPosition * 200);
-                //ÅÚ·¹Æ÷Æ®´Â È­¸é¿¡¼­ ºñÈ°¼ºÈ­ 
+                //ï¿½Ú·ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ È­ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ 
                 teleportCircleUI.gameObject.SetActive(false);
             }
         }
@@ -94,29 +96,29 @@ public class TeleportStraight : MonoBehaviour
     }
     IEnumerator Warp()
     {
-        print("¿öÇÁ ÄÚ·çÆ¾ ÇÔ¼ö");
-        MotionBlur blur; //¿öÇÁ ´À³¦À» Ç¥ÇöÇÒ ¸ğ¼Çºí·¯
-        Vector3 pos = transform.position; //¿öÇÁ ½ÃÀÛÁöÁ¡ 
-        Vector3 targetPos = teleportCircleUI.position + Vector3.up; //¸ñÀûÁö
-        float currentTime = 0; //¿öÇÁ °æ°ú ½Ã°£
-        //Æ÷½ºÆ® ÇÁ·Î¼¼½Ì¿¡¼­ »ç¿ë ÁßÀÎ ÇÁ·ÎÇÁÀÏ¿¡¼­ ¸ğ¼Çºí·¯ ¾ò¾î¿À±â
+        print("ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½Ô¼ï¿½");
+        MotionBlur blur; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Çºï¿½ï¿½ï¿½
+        Vector3 pos = transform.position; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+        Vector3 targetPos = teleportCircleUI.position + Vector3.up; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        float currentTime = 0; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+        //ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Î¼ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ ï¿½ï¿½Çºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         post.profile.TryGetSettings<MotionBlur>(out blur);
-        blur.active = true;//¿öÇÁ ½ÃÀÛÀü ºí·¯ È°¼ºÈ­
+        blur.active = true;//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­
         GetComponent<CharacterController>().enabled = false;
-        //°æ°ú ½Ã°£ÀÌ ¿öÇÁº¸´Ù ÂªÀº ½Ã°£µ¿¾È ÀÌµ¿ Ã³¸®
+        //ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Âªï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ Ã³ï¿½ï¿½
         while (currentTime < warpTime)
         {
-            currentTime += Time.deltaTime; //°æ°ú ½Ã°£ Àç±â
-            //¿öÇÁ ½ÃÀÛÁ¡¿¡¼­ µµÂøÁ¡¿¡ µµÂøÇÏ±â À§ÇØ ¿öÇÁ½Ã°£ µ¿¾È ÀÌµ¿
+            currentTime += Time.deltaTime; //ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
             transform.position = Vector3.Lerp(pos, targetPos,
                 currentTime / warpTime);
-            yield return null; //ÄÚ·çÆ¾ ´ë±â
+            yield return null; //ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½
         }
-        //ÅÚ·¹Æ÷Æ® UIÀ§Ä¡·Î ¼ø°£ ÀÌµ¿
+        //ï¿½Ú·ï¿½ï¿½ï¿½Æ® UIï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         transform.position = teleportCircleUI.position + Vector3.up;
-        //Ä³¸¯ÅÍ ÄÁÆ®·Ñ·¯ ´Ù½Ã ÄÑ±â
+        //Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ ï¿½Ù½ï¿½ ï¿½Ñ±ï¿½
         GetComponent<CharacterController>().enabled = true;
-        blur.active = false; //Æ÷½ºÆ® È¿°ú Å©±â
+        blur.active = false; //ï¿½ï¿½ï¿½ï¿½Æ® È¿ï¿½ï¿½ Å©ï¿½ï¿½
     }
 
 }

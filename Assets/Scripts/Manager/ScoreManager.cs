@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// 작성자 : 김동균 윤여진
+// 게임 결과 저장 및 랭크 계산 관리
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
@@ -58,6 +60,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     // KillCountText를 찾아서 할당하는 메서드
+    // Scene이 변경됨에 따라 제거되는 UI를 찾아서 할당하는 메서드
     private void FindKillCountText()
     {
         if (KillCountText == null)
@@ -93,6 +96,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     // UI 텍스트 업데이트 메서드
+    // 적 처치 횟수를 표시하는 UI를 업데이트하는 메서드
     private void RefreshKillCountUI()
     {
         // KillCountText가 null이면 찾아서 할당
@@ -112,18 +116,21 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    // 적 처치 횟수를 증가시키는 메서드
     public void AddKill()
     {
         KillCount++;
         RefreshKillCountUI();
     }
     
+    // 아이템 수집 횟수를 증가시키는 메서드
     public void AddItemCollection()
     {
         LastItemCollectCount++;
         Debug.Log($"아이템 수집 횟수 증가: {LastItemCollectCount}");
     }
     
+    // 스테이지 번호를 설정하는 메서드
     public void SetStage(int num)
     {
         CurrentStage = num;
@@ -136,12 +143,16 @@ public class ScoreManager : MonoBehaviour
         RefreshKillCountUI(); // 새로운 UI 찾아서 할당
     }
 
+    // 아이템 수집 횟수를 저장하는 메서드
+    // SaveResult() 메서드를 호출하여 결과를 저장
     public void SaveResult(int itemCollectCount)
     {
         LastItemCollectCount = itemCollectCount;
         SaveResult();
     }
 
+    // 게임 결과를 저장하는 메서드
+    // 플레이어명, 킬, 시간, 스테이지, 아이템 수집 횟수, 랭크, 별 개수, 날짜를 저장
     public void SaveResult()
     {
         // PlayerRuntimeStat에서 플레이어명 가져오기

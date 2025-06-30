@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
+// 작성자 : 윤여진
+// 타워 HUD 클래스
+// 기능 : 타워 체력 표시, 타워 쉴드 표시, 타워 쉴드 시간 표시, 타워 쉴드 개수 표시
 public class TowerHUD : MonoBehaviour
 {
     [Header("Widgets")]
@@ -14,7 +17,7 @@ public class TowerHUD : MonoBehaviour
     [SerializeField] Text shieldTimeText;
     [SerializeField] Text shieldCountText;
 
-    // Start is called before the first frame update
+    // 타워 HUD 시작
     void Start()
     {
         if (Tower.Instance && Tower.Instance.Runtime)
@@ -31,6 +34,7 @@ public class TowerHUD : MonoBehaviour
             Debug.LogError("PlayerHUD: target or Runtime missing");
     }
 
+    // 타워 체력 업데이트
     public void UpdateHP(float curHp, float maxHp)
     {
         hpFillBarIamage.fillAmount = curHp / maxHp;
@@ -38,6 +42,7 @@ public class TowerHUD : MonoBehaviour
         hpText.text = $"{curHp}/{maxHp}";
     }
 
+    // 타워 쉴드 시간 업데이트
     public void UpdateShieldTime(float remain, float maxvalue)
     {
         Debug.Log($"TowerHUD UpdateShield() : remainShield -> {remain}");
@@ -54,6 +59,8 @@ public class TowerHUD : MonoBehaviour
             shieldTimeText.text = maxvalue.ToString();
         }
     }
+
+    // 타워 쉴드 개수 업데이트
     public void UpdateShieldCount(int count)
     {
         shieldCountText.text = count.ToString();

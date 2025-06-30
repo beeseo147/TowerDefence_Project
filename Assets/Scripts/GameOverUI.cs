@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
+// 작성자 : 김동균
+// 게임 오버 UI 클래스
+// 기능 : 게임 오버 UI 표시, 게임 오버 UI 숨기기, 게임 오버 UI 클릭 이벤트 처리
 public class GameOverUI : MonoBehaviour
 {
     public GameObject gameOverUI;
-    // Start is called before the first frame update
+    // 게임 오버 UI 시작
     void Start()
     {
         gameOverUI.SetActive(false);
@@ -17,6 +20,7 @@ public class GameOverUI : MonoBehaviour
         Tower.Instance.onTowerDestroy += GameOver;
     }
     
+    // 게임 오버 UI 표시
     public void GameOver()
     {
         gameOverUI.SetActive(true);
@@ -32,6 +36,7 @@ public class GameOverUI : MonoBehaviour
         StartCoroutine(LoadResultAfterDelay());
     }
     
+    // 게임 오버 UI 로드
     private IEnumerator LoadResultAfterDelay()
     {
         yield return new WaitForSeconds(2f);
@@ -40,11 +45,12 @@ public class GameOverUI : MonoBehaviour
         ItemObjectPool.Instance.DestroyAllItems();
     }
 
+    // 게임 오버 UI 클릭 이벤트 처리
     public void OnClickRestart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    // Update is called once per frame
+    // 게임 오버 UI 업데이트
     void Update()
     {
         Ray ray = new Ray(ARAVRInput.RHandPosition, ARAVRInput.RHandDirection);

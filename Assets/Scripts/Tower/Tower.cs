@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /* ----- Tower Controller ----- */
+// 작성자 : 윤여진
+// 타워 컨트롤러 클래스
+// 기능 : 타워 초기화, 타워 데미지 처리, 타워 업그레이드, 타워 쉴드 처리
 public class Tower : MonoBehaviour
 {
     public static Tower Instance; //Tower의 싱글톤 객체
@@ -21,6 +24,7 @@ public class Tower : MonoBehaviour
     int[]  hpThresholds = { 70, 50, 20 };
     bool[] usedShield   = { false, false, false };
 
+    // 타워 초기화
     private void Awake()
     {
         if(Instance == null)
@@ -42,6 +46,7 @@ public class Tower : MonoBehaviour
             return;
         }
     }
+    // 타워 시작
     void Start()
     {
         Runtime.Init(baseSO);
@@ -57,6 +62,7 @@ public class Tower : MonoBehaviour
         damageImage.enabled = false; //처음에는 비활성화
     }
 
+    // 타워 데미지 처리
     public void TakeDamage(float dmg)
     {
         if (Runtime.IsGodMode)
@@ -74,6 +80,7 @@ public class Tower : MonoBehaviour
         }
     }
 
+    // 타워 데미지 이벤트
     IEnumerator DamageEvent()
     {
         //0.1초 동안 빨간색 이미지를 활성화/비활성화하여 피격효과를 재생함
@@ -82,12 +89,14 @@ public class Tower : MonoBehaviour
         damageImage.enabled = false;
     }
 
+    // 타워 데미지
     void FlashHit()
     {
         StopAllCoroutines();
         StartCoroutine(DamageEvent());
     }
 
+    // 타워 업그레이드
     void Upgrade(int stagenum)
     {
         switch (stagenum)
@@ -106,6 +115,7 @@ public class Tower : MonoBehaviour
         }
     }
 
+    // 타워 쉴드 처리
     void CheckAutoShield(float curhp, float maxhp)
     {
         if (Runtime.ShieldCharge <= 0)

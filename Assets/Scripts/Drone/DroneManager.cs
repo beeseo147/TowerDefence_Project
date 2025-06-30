@@ -2,34 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// ì‘ì„±ì : ë°•ì„¸ì˜
+// ë“œë¡  ë§¤ë‹ˆì € í´ë˜ìŠ¤
+// ê¸°ëŠ¥ : ë“œë¡  ìƒì„±, ë“œë¡  ìƒì„± ê°„ê²© ì„¤ì •, ë“œë¡  ìƒì„± ê°„ê²© ì„¤ì •, ë“œë¡  ìƒì„± ê°„ê²© ì„¤ì •, ë“œë¡  ìƒì„± ê°„ê²© ì„¤ì •, ë“œë¡  ìƒì„± ê°„ê²© ì„¤ì •, ë“œë¡  ìƒì„± ê°„ê²© ì„¤ì •, ë“œë¡  ìƒì„± ê°„ê²© ì„¤ì •, ë“œë¡  ìƒì„± ê°„ê²© ì„¤ì •, ë“œë¡  ìƒì„± ê°„ê²© ì„¤ì •
 public class DroneManager : MonoBehaviour
 {
-    //µå·ĞÀÇ »ı¼º½Ã°£ °£°İÀ» 1ÃÊ~5ÃÊ
+    //ë“œë¡  ìƒì„± ê°„ê²© ìµœì†Œê°’
     public float minTime = 1;
+    //ë“œë¡  ìƒì„± ê°„ê²© ìµœëŒ€ê°’
     public float maxTime = 5;
-    float createTime; //»ı¼º ½Ã°£ °£°İ
-    float currentTime; //ÇöÀç ½Ã°£
+    float createTime; //ë“œë¡  ìƒì„± ê°„ê²©
+    float currentTime; //ë“œë¡  ìƒì„± ê°„ê²©
 
-    public Transform[] spawnPoints; //µå·ĞÀÇ ½ºÆù Æ÷ÀÎÆ®
-    public GameObject[] droneFactory; //µå·Ğ ÇÁ¸®ÆÕ
-    public StageManager stageManager; //½ºÅ×ÀÌÁö °ü¸® ½ºÅ©¸³Æ®
+    public Transform[] spawnPoints; //ë“œë¡  ìƒì„± ìœ„ì¹˜
+    public GameObject[] droneFactory; //ë“œë¡  ìƒì„± í”„ë¦¬íŒ¹
+    public StageManager stageManager; //ìŠ¤í…Œì´ì§€ ë§¤ë‹ˆì €
 
     private List<int> currentDroneIndex = new List<int>();
-
+    //ë“œë¡  ìƒì„± ê°„ê²© ë§µ
     private Dictionary<int, int[]> stageDroneMap = new Dictionary<int, int[]>()
     {
-        { 1, new int[] { 0 } },              // ±Ù°Å¸®¸¸
-        { 2, new int[] { 0, 1 } },               // ±Ù°Å¸® + ·¯³Ê
-        { 3, new int[] { 0, 2 } },               // ±Ù°Å¸® + ¿ø°Å¸®
-        { 4, new int[] { 0, 1, 2 } },            // ±âº» Á¶ÇÕ
-        { 5, new int[] { 2, 3 } },               // ¿ø°Å¸® + Èú·¯ (±Ù°Å¸® ¾øÀ½ ¡æ ¹æ¾î Áß½É)
-        { 6, new int[] { 1, 2, 3 } },            // ·¯³Ê Áß½É, ¾Ğ¹Ú °è¿­
-        { 7, new int[] { 0, 3 } },               // ±Ù°Å¸® + Èú·¯¸¸ (È¸º¹ º¸È£ ¿ì¼± ÆÇ´Ü À¯µµ)
-        { 8, new int[] { 1, 3 } },               // ·¯³Ê + Èú·¯ (È¸º¹°ú ¼ÓµµÀÇ Á¶ÇÕ)
-        { 9, new int[] { 0, 1, 2, 3 } },         // Àü Á¶ÇÕ (º¸½ºÀü Á÷Àü)
-        { 10, new int[] { } },                   // º¸½º ½ºÅ×ÀÌÁö
+        { 1, new int[] { 0 } },              // ë“œë¡ 
+        { 2, new int[] { 0, 1 } },               // ë“œë¡  + íëŸ¬ ë“œë¡ 
+        { 3, new int[] { 0, 2 } },               // ë“œë¡  + ë³´ìŠ¤ ë“œë¡ 
+        { 4, new int[] { 0, 1, 2 } },            // ë“œë¡  + íëŸ¬ ë“œë¡  + ë³´ìŠ¤ ë“œë¡ 
+        { 5, new int[] { 2, 3 } },               // íëŸ¬ ë“œë¡  + ë³´ìŠ¤ ë“œë¡  (ë“œë¡  ìƒì„± ê°„ê²© ìµœëŒ€ê°’)
+        { 6, new int[] { 1, 2, 3 } },            // íëŸ¬ ë“œë¡  + ë³´ìŠ¤ ë“œë¡  + íëŸ¬ ë“œë¡  (ë“œë¡  ìƒì„± ê°„ê²© ìµœëŒ€ê°’)
+        { 7, new int[] { 0, 3 } },               // ë“œë¡  + ë³´ìŠ¤ ë“œë¡  (ë“œë¡  ìƒì„± ê°„ê²© ìµœëŒ€ê°’)
+        { 8, new int[] { 1, 3 } },               // íëŸ¬ ë“œë¡  + ë³´ìŠ¤ ë“œë¡  (ë“œë¡  ìƒì„± ê°„ê²© ìµœëŒ€ê°’)
+        { 9, new int[] { 0, 1, 2, 3 } },         // ë“œë¡  + íëŸ¬ ë“œë¡  + ë³´ìŠ¤ ë“œë¡  + íëŸ¬ ë“œë¡  (ë“œë¡  ìƒì„± ê°„ê²© ìµœëŒ€ê°’)
+        { 10, new int[] { } },                   // ë“œë¡  ìƒì„± ê°„ê²© ìµœëŒ€ê°’
     };
-
+    //ë“œë¡  ìƒì„± ê°„ê²© ì´ˆê¸°í™”
     void Start()
     {
         stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
@@ -38,7 +42,7 @@ public class DroneManager : MonoBehaviour
         OnStageChanged(stageManager.stage);
         createTime = Random.Range(minTime, maxTime);
     }
-
+    //ë“œë¡  ìƒì„± ê°„ê²© ì—…ë°ì´íŠ¸
     void Update()
     {
         if (stageManager.stage >= 10) return;
@@ -58,6 +62,7 @@ public class DroneManager : MonoBehaviour
             drone.transform.position = spawnPoints[spawnIndex].position;
         }
     }
+    //ìŠ¤í…Œì´ì§€ ë³€ê²½ ì‹œ ë“œë¡  ìƒì„± ê°„ê²© ì—…ë°ì´íŠ¸
     private void OnStageChanged(int stage)
     {
         if (stageDroneMap.ContainsKey(stage))

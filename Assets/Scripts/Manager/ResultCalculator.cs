@@ -1,3 +1,5 @@
+// 작성자 : 김동균
+// 게임 결과 랭크 계산
 public static class ResultCalculator
 {
     public static string GetBoldnessRank(int kills)

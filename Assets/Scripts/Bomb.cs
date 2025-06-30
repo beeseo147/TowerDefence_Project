@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GrabObject;
 
+// 작성자 : 김동균
+// 폭탄 아이템 클래스
+// 기능 : 폭탄 아이템 효과 적용
 public class Bomb : MonoBehaviour, IUseItem
 {
     Transform explosion; 
@@ -56,6 +59,7 @@ public class Bomb : MonoBehaviour, IUseItem
         }
     }
 
+    // 폭탄 효과 적용
     private void OnCollisionEnter(Collision collision)
     {
         int layerMask = 1 << LayerMask.NameToLayer("Drone");
@@ -75,6 +79,7 @@ public class Bomb : MonoBehaviour, IUseItem
         ItemObjectPool.Instance.ReturnItem(gameObject);
     }
 
+    // 폭탄 사용
     public void UseItem(GameObject player)
     {
         
@@ -94,7 +99,7 @@ public class Bomb : MonoBehaviour, IUseItem
 
         isGrabbed = true;
     }
-
+    // 폭탄 Key 입력시 폭탄 사용
     void Update()
     {
         if (isGrabbed)

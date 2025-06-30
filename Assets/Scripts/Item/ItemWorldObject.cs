@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// 작성자 : 김동균
+// 아이템 월드 오브젝트 클래스
+// 기능 : 아이템 회전, 위아래 움직임, 아이템 데이터 설정, 아이템 수집 이벤트 발생, 아이템 수집 처리
 public class ItemWorldObject : MonoBehaviour, ICollectible
 {
     [Header("아이템 설정")]
